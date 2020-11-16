@@ -5,7 +5,7 @@
 
 using namespace std;
 
-TrafficLight::TrafficLight(String light_color, int green, int yellow)
+TrafficLight::TrafficLight(string light_color, int green, int yellow)
 	: color{light_color},
 	  greenLength{green},
 	  yellowLength{yellow}
