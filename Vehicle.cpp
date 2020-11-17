@@ -17,7 +17,25 @@ Vehicle::~Vehicle(){}
 //moveCheck checks to see if a given vehicle can move to the next tile
 // will call moveForward if it can, otherwise nothing
 //
-void Vehicle::moveCheck(){}
+void Vehicle::moveCheck(){
+  //check light - if green,
+  //check vehicles head
+  // see if the next section after head is occupied
+  // if not occupied - move
+
+  // if yellow, check if can exit intersection before turn red
+  // if not, don't move,
+  // if yes, check section after head section if it is occupied
+  // if it is not occupied, move
+
+  //^ will need two different checks for the yellow light because a vehicle
+  // getting through the intersection before red depends on if it is going straight or turning
+  // for example, a car takes 4 ticks to get through going straight and 3 when turning.
+
+  //check if light is red
+  // if it is, don't move
+
+}
 
 
 //moveForward will take in a vehicle pointer and move the vehicle forward one space
@@ -26,7 +44,12 @@ void Vehicle::moveCheck(){}
 //
 void Vehicle::moveForward(Vehicle *veh){}
 
-
+/*head.next.setOccupied = true;
+head = head.next;
+head.setVehicle = this;
+tail.setOccupied = false;
+tail = tail.next;
+tail.setVehicle(this);*/
 //turnCheck checks to see if a given vehicle can turn right
 // will call turnRight() if it can, otherwise nothing
 void Vehicle::turnCheck(){}
@@ -56,18 +79,18 @@ int Vehicle::getSize(){return size;}
 
 //getGreenLight returns a boolean value of true if the TrafficLight is green
 //
-bool Vehicle::getGreenLight(){}
+bool Vehicle::getGreenLight(){return greenLight;}
 
 
 //getYellowLight returns a boolean value of true if the TrafficLight is yellow
-bool Vehicle::getYellowLight(){}
+bool Vehicle::getYellowLight(){return yellowLight;}
 
 
 //setTurningState sets the turning boolean to true during the turn movement of a vehicle
 //
 //Parameter - bool state
 //
-void Vehicle::setTurningState(bool state){turningState = state;}
+void Vehicle::setTurningState(bool state){this->turningState = state;}
 
 
 //getTurningState returns the turning state boolean

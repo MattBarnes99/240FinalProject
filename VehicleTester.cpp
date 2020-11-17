@@ -8,9 +8,9 @@ int main(){
     cout << "Testing constructor" << endl;
     cout << "-------------------" << endl;
     bool turn = true;
-    Vehicle veh = Vehicle(VehicleType::car,Direction::north,3,turn);
+    Vehicle veh = Vehicle(VehicleType::car,Direction::north,2,turn);
 
-    
+
 
     return 0;
 }

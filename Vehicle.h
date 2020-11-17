@@ -19,7 +19,7 @@ class Vehicle : public VehicleBase {
         bool yellowLight = false;
         bool endOfRoad = false;
         Direction curDir;
-        
+
 
     public:
         Vehicle(VehicleType type, Direction originalDirection, int size, bool rightTurn);
@@ -45,7 +45,7 @@ class Vehicle : public VehicleBase {
 
         bool getTurningState();
         void removeVehicle(Vehicle *done);
-    
+
         //void placeVehicle(Section *start);
 
 
