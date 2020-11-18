@@ -1,3 +1,7 @@
+#ifndef __VEHICLE_CPP__
+#define __VEHICLE_CPP__
+
+
 #include "Vehicle.h"
 #include <iostream>
 
@@ -138,3 +142,6 @@ void Vehicle::removeVehicle(Vehicle *done){}
 //
 //Return - Section *tail
 // Section* Vehicle::getTail(){return this->tail;}
+
+
+#endif

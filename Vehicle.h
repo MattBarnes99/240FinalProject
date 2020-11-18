@@ -1,3 +1,7 @@
+#ifndef __VEHICLE_H__
+#define __VEHICLE_H__
+
+
 #include "VehicleBase.h"
 //#include "TrafficLight.h"
 //#include "Section.h"
@@ -50,3 +54,5 @@ class Vehicle : public VehicleBase {
 
 
 };
+
+#endif

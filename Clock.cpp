@@ -1,6 +1,7 @@
 #ifndef __CLOCK_CPP__
 #define __CLOCK_CPP__
 
+#include <iostream>
 #include "Clock.h"
 
 using namespace std;
