@@ -46,7 +46,33 @@ void Vehicle::moveCheck(){
 //
 //Parameter - Vehicle *veh
 //
-void Vehicle::moveForward(Vehicle *veh){}
+void Vehicle::moveForward(Vehicle *veh){ //sum bout a setVehicle that needs to be included?
+  if(this->getVehicleType() == VehicleType::car && this->head.next.setOccupied() == false){
+    this->head = head.next;
+    head.setOccupied();
+    this->tail.setOccupied = false;
+    this->tail = tail.next;
+    tail.setOccupied();
+  }
+  else if(this->getVehicleType() == VehicleType::suv && this->head.next.setOccupied() == false){
+    this->head = head.next;
+    head.setOccupied();
+    head->previous->setOccupied();
+    this->tail.setOccupied = false;
+    this->tail = tail.next;
+    tail.setOccupied();
+  }
+  else if(this->getVehicleType() == VehicleType::truck && this->head.next.setOccupied() == false){
+    this->head = head.next;
+    head.setOccupied();
+    head->previous->setOccupied();
+    head->previous->previous->setOccupied();
+    this->tail.setOccupied = false;
+    this->tail = tail.next;
+    tail.setOccupied();
+  }
+}
+
 
 /*head.next.setOccupied = true;
 head = head.next;
