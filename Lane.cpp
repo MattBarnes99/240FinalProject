@@ -6,7 +6,7 @@
 using namespace std;
 
 Lane::Lane(int sections) {
-	lane.resize(sections);
+	lane.resize(sections*2+2);
 }
 
 Lane::Lane(const Lane& other) {
