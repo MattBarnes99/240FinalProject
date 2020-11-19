@@ -5,25 +5,27 @@
 
 using namespace std;
 
-Section::Section() {};
+//Section::Section() {};
 
-Section::~Section() {};
+//Section::~Section() {};
 
-Section::setVehicle(VehicleBase *newVehicle) {
+void Section::setVehicle(VehicleBase* newVehicle) {
 	vehicleHere = newVehicle;
 }
 
-Section::setOccupied() {
+void Section::setOccupied() {
 	if (vehicleHere == nullptr)
 		occupied = true;
 	else
 		occupied = false;
 }
 
-Section::setNext(Section *nextTile) {
+void Section::setNext(Section* nextTile) {
 	next = nextTile;
 }
 
-Section::setPrevious(Section *prevTile) {
+void Section::setPrevious(Section* prevTile) {
 	previous = prevTile;
 }
+
+#endif

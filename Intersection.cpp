@@ -5,6 +5,8 @@
 
 using namespace std;
 
-Intersection::Intersection() : Section() {};
+//Intersection::Intersection() : Section() {};
 
-Intersection::~Intersection() {};
+//Intersection::~Intersection() {};
+
+#endif
