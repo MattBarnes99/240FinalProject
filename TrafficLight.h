@@ -2,26 +2,34 @@
 #define __TRAFFICLIGHT_H__
 
 #include <string>
+#include "VehicleBase.h"
 
 using namespace std;
 
 class TrafficLight {
-	public:
-		string color;
+	
+	private:
+		LightColor color;
 		int greenLength;
+		int greenTimeLeft;
 		int yellowLength;
+		int yellowTimeLeft;
+		int redLength;
+		int redTimeLeft;
 
-		TrafficLight(string light_color, int green, int yellow);
+
+	
+	public:
+		
+
+		TrafficLight(LightColor light_color, int green, int yellow);
 		TrafficLight(const TrafficLight& other);
+		TrafficLight();
 		~TrafficLight();
 
-		inline string getColor() const {return this->color;}
-		inline int getGreenLength() const {return this->greenLength;}
-		inline int getYellowLength() const {return this->yellowLength;}
+		inline LightColor getColor() const {return this->color;}
 
-		inline void setColor(string light_color) {color = light_color;}
-		inline void setGreenLength(int green) {greenLength = green;}
-		inline void setYellowLength(int yellow) {yellowLength = yellow;}
+		void decrement();
 };
 
 #endif

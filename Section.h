@@ -9,18 +9,20 @@ class Section {
 	public:
 		Section *next;
 		Section *previous;
-		Bool occupied;
+		bool occupied;
 		VehicleBase *vehicleHere;
-		String name;
+		string name;
 
 		Section() {};
 		~Section() {};
 
 		inline Section* getNext() {return next;};
 		inline Section* getPrevious() {return previous;};
-		inline String getName() {return name;};
+		inline string getName() {return name;};
 		void setVehicle(VehicleBase* newVehicle);
 		void setOccupied();
 		void setNext(Section *nextTile);
 		void setPrevious(Section *prevTile);
-}
+};
+
+#endif

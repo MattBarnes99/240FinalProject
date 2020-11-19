@@ -13,6 +13,8 @@ Lane::Lane(const Lane& other) {
 	lane = other.lane;
 }
 
+Lane::Lane(){}
+
 Lane::~Lane() {}
 
 #endif

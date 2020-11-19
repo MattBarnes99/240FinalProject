@@ -112,36 +112,51 @@ void Vehicle::removeVehicle(Vehicle *done){}
 
 
 //placeVehicle method places the vehicle at the starting section of a given lane
+//  will backfill the rest of the sections on the invisible sections
 //
 //Parameter - Section *start
 //
-//void Vehicle::placeVehicle(Section *start){}
+void Vehicle::placeVehicle(Section *start){
+  this->head = start;
+  start->setOccupied();
+  start->previous->setOccupied();
+  if (this->getVehicleType() == VehicleType::car){
+    this->setTail(start->previous);
+  }else if(this->getVehicleType() == VehicleType::suv){
+    start->previous->previous->setOccupied();
+    this->setTail(start->previous->previous);
+  }else{
+    start->previous->previous->setOccupied();
+    start->previous->previous->previous->setOccupied();
+    this->setTail(start->previous->previous->previous);
+  }
+}
 
 
 //setHead sets the head pointer for a vehicle
 //
 //Parameter - Section *head
 //
-//void Vehicle::setHead(Section* head){this->head = head;}
+void Vehicle::setHead(Section* head){this->head = head;}
 
 
 //setTail sets the tail pointer for a vehicle
 //
 //Parameter - Section *tail
 //
-//void Vehicle::setTail(Section* tail){this->tail = tail;}
+void Vehicle::setTail(Section* tail){this->tail = tail;}
 
 
 //getHead returns a pointer to the front section of a vehicle
 //
 //Return - Section *head
-//Section* Vehicle::getHead(){return this->head;}
+Section* Vehicle::getHead(){return this->head;}
 
 
 //getTail returns a pointer to the back section of a vehicle
 //
 //Return - Section *tail
-// Section* Vehicle::getTail(){return this->tail;}
+Section* Vehicle::getTail(){return this->tail;}
 
 
 #endif

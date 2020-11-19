@@ -12,7 +12,8 @@ class Lane {
 
 		Lane(int sections);
 		Lane(const Lane& other);
+		Lane();
 		~Lane();
-}
+};
 
 #endif
