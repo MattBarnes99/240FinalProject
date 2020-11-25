@@ -5,6 +5,10 @@
 
 using namespace std;
 
+
+//Constructor takes in the starting LightColor and the lenght of the different light states
+// and assigns them to their relevant instance variables
+//
 TrafficLight::TrafficLight(LightColor light_color, int green, int yellow, int red)
 	: color{light_color},
 	  greenLength{green},
@@ -15,14 +19,26 @@ TrafficLight::TrafficLight(LightColor light_color, int green, int yellow, int re
 	  redTimeLeft{red}
 	{}
 
+
+//Copy constructor
 TrafficLight::TrafficLight(const TrafficLight& other)
 	: color{other.color},
 	  greenLength{other.greenLength},
 	  yellowLength{other.yellowLength}
 	{}
 
+
+//Empty constructor
 TrafficLight::TrafficLight(){}
 
+
+//Destructor
+TrafficLight::~TrafficLight() {}
+
+
+//decrement will decrease the timeLeft variable for the given LightColor state
+//and switch to the next LightColor if the timeLeft variable hits 0
+//
 void TrafficLight::decrement(){
 	if (color == LightColor::green && greenTimeLeft > 0){
 		greenTimeLeft--;
@@ -45,7 +61,5 @@ void TrafficLight::decrement(){
 	}
 
 }
-
-TrafficLight::~TrafficLight() {}
 
 #endif

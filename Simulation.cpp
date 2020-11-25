@@ -44,7 +44,6 @@ int main(){
     Vehicle v8(VehicleType::suv, Direction::south, 3, false);
 
     
-    //vector<VehicleBase*> veg = northBound.getVehicleVector();
     anim.setVehiclesNorthbound(northBound.getVehicleVector());
     anim.setVehiclesSouthbound(southBound.getVehicleVector());
     anim.setVehiclesEastbound(eastBound.getVehicleVector());

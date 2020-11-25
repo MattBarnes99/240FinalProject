@@ -6,6 +6,7 @@
 // Empty constructor
 randomGen::randomGen(){}
 
+
 //setSeed sets the seed for random number generation
 //
 //Parameter - int seed

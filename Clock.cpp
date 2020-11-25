@@ -5,11 +5,18 @@
 
 using namespace std;
 
+
+//Constructor sets the max time instance variable
+//
 Clock::Clock(int time):counter{time}{}
 
+
+//Destructor
 Clock::~Clock(){}
 
-void Clock::increment(){counter++;}
+
+//decrement decreases the clock by one
+void Clock::decrement(){counter--;}
 
 #endif
 

@@ -3,15 +3,14 @@
 
 #include "Section.h"
 #include "VehicleBase.h"
-#include <string>
 
 using namespace std;
 
 class Intersection : public Section{
 	
 	private:
+		
 		Section *right;
-	
 	
 	public:
 		

@@ -21,10 +21,14 @@ class Lane {
 		Lane(int sections, Intersection* interSectionOne, Intersection* interSectionTwo);
 		Lane(const Lane& other);
 		Lane();
-		Section* getEnd(); // returns the last inbounds section of the lane
-		Section* getStart(); //returns the first inbounds section of the lane
 		~Lane();
-		vector<VehicleBase*> getVehicleVector();
+
+		Section* getEnd(); //returns the last inbounds section of the lane
+		Section* getStart(); //returns the first inbounds section of the lane
+		
+		vector<VehicleBase*> getVehicleVector(); //vector to be passed to the animator
+
+		void advance(); 
 
 };
 
