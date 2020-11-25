@@ -2,27 +2,36 @@
 #define __SECTION_H__
 
 #include <string>
+#include <vector>
+#include "VehicleBase.h"
 
 using namespace std;
 
 class Section {
-	public:
-		Section *next;
-		Section *previous;
-		bool occupied;
-		VehicleBase *vehicleHere;
+	
+	private:
+
+		Section* next;
+		Section* previous;
+		bool occupied = false;
+		VehicleBase* vehicleHere = nullptr;
 		string name;
 
-		Section() {};
-		~Section() {};
+	public:
+		
+		Section();
+		~Section();
 
 		inline Section* getNext() {return next;};
 		inline Section* getPrevious() {return previous;};
 		inline string getName() {return name;};
 		void setVehicle(VehicleBase* newVehicle);
-		void setOccupied();
+		VehicleBase* getVehicle();
+		void setOccupied(bool state);
+		bool getOccupied();
 		void setNext(Section *nextTile);
 		void setPrevious(Section *prevTile);
+		
 };
 
 #endif

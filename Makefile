@@ -1,13 +1,9 @@
-EXECS = testAnimator
-OBJS = testAnimator.o Animator.o VehicleBase.o
-
-#### use next two lines for Mac
 CC = g++
-CCFLAGS = -std=c++17
+LD = $(CC)
+CCFLAGS = -std=c++17 -Wall 
 
-#### use next two lines for mathcs* machines:
-#CC = g++
-#CCFLAGS = -std=c++17
+EXECS = testAnimator TrafficLightTester Simulator
+OBJS = testAnimator.o Animator.o VehicleBase.o Section.o Simulation.o Vehicle.o Clock.o Lane.o Intersection.o TrafficLight.o 
 
 all: $(EXECS)
 
