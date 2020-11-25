@@ -22,6 +22,74 @@ Vehicle::~Vehicle(){}
 // will call moveForward if it can, otherwise nothing
 //
 void Vehicle::moveCheck(){
+
+  //not at the intersection
+  //needs to move forward at each clock tick when possible
+  if(if((this->getVehicleType() == VehicleType::car && !this->head at the intersection){
+    //according to clock tick -> move forward
+    this->moveForward();
+  }
+  //at the intersection
+  if((this->getVehicleType() == VehicleType::car && this->head at the intersection){ //specific index
+    if(LightColor::red){
+      //dont move
+    }
+    else if(LightColor::yellow){
+      if(yellowTimeLeft >= 3 ){
+        for(int i = 0; i < 4; i++){ //wat would be the correct syntax?
+          this->moveForward();      //make this according to clock tick?
+        }                            //would just be move forward because we are going to have an advance method
+      }
+    }
+    else if(LightColor::green){
+      if(greenTimeLeft >= 3 ){
+        for(int i = 0; i < 4; i++){ //wat would be the correct syntax?
+          this->moveForward();      //make this according to clock tick?
+        }
+      }
+    }
+  }
+  if((this->getVehicleType() == VehicleType::suv && this->head at the intersection){ //specific index
+    if(LightColor::red){
+      //dont move
+    }
+    else if(LightColor::yellow){
+      if(yellowTimeLeft >= 5 ){
+        for(int i = 0; i < 6; i++){ //wat would be the correct syntax?
+          this->moveForward();      //make this according to clock tick?
+        }
+      }
+    }
+    else if(LightColor::green){
+      if(greenTimeLeft >= 5 ){
+        for(int i = 0; i < 6; i++){ //wat would be the correct syntax?
+          this->moveForward();      //make this according to clock tick?
+        }
+      }
+    }
+  }
+  if((this->getVehicleType() == VehicleType::truck && this->head at the intersection){ //specific index
+    if(LightColor::red){
+      //dont move
+    }
+    else if(LightColor::yellow){
+      if(yellowTimeLeft >= 6 ){
+        for(int i = 0; i < 7; i++){ //wat would be the correct syntax?
+          this->moveForward();      //make this according to clock tick?
+        }
+      }
+    }
+    else if(LightColor::green){
+      if(greenTimeLeft >= 6 ){
+        for(int i = 0; i < 7; i++){ //wat would be the correct syntax?
+          this->moveForward();      //make this according to clock tick?
+        }
+      }
+    }
+  }
+  if()
+
+
   //check light - if green,
   //check vehicles head
   // see if the next section after head is occupied
