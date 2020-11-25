@@ -29,9 +29,9 @@ class Vehicle : public VehicleBase {
         Vehicle(VehicleType type, Direction originalDirection, int size, bool rightTurn);
         ~Vehicle();
         void moveCheck();
-        void moveForward(Vehicle *veh);
+        void moveForward(Vehicle* veh);
         void turnCheck();
-        void turnRight(Vehicle *veh);
+        void turnRight(Vehicle* veh);
 
         Direction getDir();
         void setDir(Direction newDir);
@@ -42,15 +42,15 @@ class Vehicle : public VehicleBase {
         bool getYellowLight();
         void setTurningState(bool);
 
-        void setHead(Section *head);
-        void setTail(Section *tail);
-        Section * getHead();
-        Section * getTail();
+        void setHead(Section* head);
+        void setTail(Section* tail);
+        Section* getHead();
+        Section* getTail();
 
         bool getTurningState();
-        void removeVehicle(Vehicle *done);
+        void removeVehicle(Vehicle* done);
 
-        void placeVehicle(Section *start);
+        void placeVehicle(Section* start);
 
 
 };

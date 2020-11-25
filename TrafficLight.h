@@ -22,12 +22,13 @@ class TrafficLight {
 	public:
 		
 
-		TrafficLight(LightColor light_color, int green, int yellow);
+		TrafficLight(LightColor light_color, int green, int yellow, int red);
 		TrafficLight(const TrafficLight& other);
 		TrafficLight();
 		~TrafficLight();
 
 		inline LightColor getColor() const {return this->color;}
+		inline int getYellowTimeLeft() const {return this->yellowTimeLeft;}
 
 		void decrement();
 };

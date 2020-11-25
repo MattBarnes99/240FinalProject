@@ -5,14 +5,14 @@
 
 using namespace std;
 
-TrafficLight::TrafficLight(LightColor light_color, int green, int yellow)
+TrafficLight::TrafficLight(LightColor light_color, int green, int yellow, int red)
 	: color{light_color},
 	  greenLength{green},
 	  greenTimeLeft{green},
 	  yellowLength{yellow},
 	  yellowTimeLeft{yellow},
-	  redLength{yellow+green},
-	  redTimeLeft{yellow+green}
+	  redLength{red},
+	  redTimeLeft{red}
 	{}
 
 TrafficLight::TrafficLight(const TrafficLight& other)

@@ -9,21 +9,28 @@ Section::Section() {};
 
 Section::~Section() {};
 
-Section::setVehicle(VehicleBase *newVehicle) {
+void Section::setVehicle(VehicleBase* newVehicle) {
 	vehicleHere = newVehicle;
 }
 
-Section::setOccupied() {
-	if (vehicleHere == nullptr)
-		occupied = true;
-	else
-		occupied = false;
+void Section::setOccupied(bool state) {
+	occupied = state;
 }
 
-Section::setNext(Section *nextTile) {
+void Section::setNext(Section *nextTile) {
 	next = nextTile;
 }
 
-Section::setPrevious(Section *prevTile) {
+void Section::setPrevious(Section *prevTile) {
 	previous = prevTile;
 }
+
+bool Section::getOccupied(){
+	return occupied;
+}
+
+VehicleBase* Section::getVehicle(){
+	return vehicleHere;
+}
+
+#endif

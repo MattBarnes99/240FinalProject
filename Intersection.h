@@ -2,7 +2,7 @@
 #define __INTERSECTION_H__
 
 #include "Section.h"
-#include "Vehicle.h"
+#include "VehicleBase.h"
 #include <string>
 
 using namespace std;
@@ -15,8 +15,8 @@ class Intersection : public Section{
 	
 	public:
 		
-		Intersection() {};
-		~Intersection() {};
+		Intersection();
+		~Intersection();
 		
 		void setRight(Section *right);
 		

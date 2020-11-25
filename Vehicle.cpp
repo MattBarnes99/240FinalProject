@@ -117,18 +117,33 @@ void Vehicle::removeVehicle(Vehicle *done){}
 //Parameter - Section *start
 //
 void Vehicle::placeVehicle(Section *start){
+
+  //set the head of the vehicle to the given section
   this->head = start;
-  start->setOccupied();
-  start->previous->setOccupied();
+
+  //set that sections occupied boolean to true and assign the vehicle to the section
+  start->setOccupied(true);
+  start->setVehicle(this);
+  
+  //set the previous section to true and assign the vehicle to that section
+  start->getPrevious()->setOccupied(true);
+  start->getPrevious()->setVehicle(this);
+
+  //If vehicle is car, set the tail to the second section
   if (this->getVehicleType() == VehicleType::car){
-    this->setTail(start->previous);
+    this->setTail(start->getPrevious());
+  //If vehicle is suv, assign another section and set tail to third section
   }else if(this->getVehicleType() == VehicleType::suv){
-    start->previous->previous->setOccupied();
-    this->setTail(start->previous->previous);
+    start->getPrevious()->getPrevious()->setOccupied(true);
+    start->getPrevious()->getPrevious()->setVehicle(this);
+    this->setTail(start->getPrevious()->getPrevious());
+  //If vehicle is truck, assign two more sections and set tail to fourth section
   }else{
-    start->previous->previous->setOccupied();
-    start->previous->previous->previous->setOccupied();
-    this->setTail(start->previous->previous->previous);
+    start->getPrevious()->getPrevious()->setOccupied(true);
+    start->getPrevious()->getPrevious()->setVehicle(this);
+    start->getPrevious()->getPrevious()->getPrevious()->setOccupied(true);
+    start->getPrevious()->getPrevious()->getPrevious()->setVehicle(this);
+    this->setTail(start->getPrevious()->getPrevious()->getPrevious());
   }
 }
 

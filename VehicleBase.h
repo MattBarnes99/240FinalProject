@@ -15,7 +15,6 @@ class VehicleBase
       int         vehicleID;
       VehicleType vehicleType;
       Direction   vehicleDirection;
-
    public:
       VehicleBase(VehicleType type, Direction originalDirection);
       VehicleBase(const VehicleBase& other);
@@ -24,7 +23,7 @@ class VehicleBase
       inline int getVehicleID() const { return this->vehicleID; }
 
       inline VehicleType getVehicleType() const { return this->vehicleType; }
-      inline Direction   getVehicleOriginalDirection() const { return this->vehicleDirection; }
+      inline Direction getVehicleOriginalDirection() const { return this->vehicleDirection; }
 };
 
 #endif
