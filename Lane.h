@@ -12,7 +12,7 @@ class Lane {
 	private:
 		Section* start;
 		Section* end;
-		vector<Section *> lane;
+		vector<Section*> lane;
 		int size; //size of the lane not counting offbounds sections
 		void link(); // will create the next and previous links for the sections
 	

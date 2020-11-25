@@ -15,7 +15,7 @@ using namespace std;
 //		Intersection* one - first intersection section
 //		Intersection* two - second intersection section
 //
-Lane::Lane(int halfsize, Intersection* interSectionOne, Intersection* interSectionTwo) {
+Lane::Lane(int halfsize, Intersection* interSectionOne, Intersection* interSectionTwo): size{halfsize} {
 	
 	//adds four offbounds section pointers to lane
 	for (int i = 0; i < 4; i++){

@@ -17,7 +17,7 @@ class Vehicle : public VehicleBase {
         Section *tail;
         int size;
         void setOccupied();
-        bool turningState;
+        int turningState = -1;
         bool turnChoice;
         bool greenLight = false;
         bool yellowLight = false;
@@ -40,14 +40,14 @@ class Vehicle : public VehicleBase {
 
         bool getGreenLight();
         bool getYellowLight();
-        void setTurningState(bool);
+        void setTurningState(int);
 
         void setHead(Section* head);
         void setTail(Section* tail);
         Section* getHead();
         Section* getTail();
 
-        bool getTurningState();
+        int getTurningState();
         void removeVehicle(Vehicle* done);
 
         void placeVehicle(Section* start);

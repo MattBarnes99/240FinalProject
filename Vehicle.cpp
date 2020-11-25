@@ -120,14 +120,14 @@ bool Vehicle::getYellowLight(){return yellowLight;}
 //
 //Parameter - bool state
 //
-void Vehicle::setTurningState(bool state){this->turningState = state;}
+void Vehicle::setTurningState(int state){this->turningState = state;}
 
 
 //getTurningState returns the turning state boolean
 //
 //Return - bool turningState
 //
-bool Vehicle::getTurningState(){return turningState;}
+int Vehicle::getTurningState(){return turningState;}
 
 
 //removeVehicle is used to dynamically delete a vehicle object once it fully leaves the visible road section
