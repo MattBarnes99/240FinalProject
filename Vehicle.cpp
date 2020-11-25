@@ -21,7 +21,7 @@ Vehicle::~Vehicle(){}
 //moveCheck checks to see if a given vehicle can move to the next tile
 // will call moveForward if it can, otherwise nothing
 //
-void Vehicle::moveCheck(){
+//void Vehicle::moveCheck(){
   //check light - if green,
   //check vehicles head
   // see if the next section after head is occupied
@@ -82,13 +82,13 @@ tail = tail.next;
 tail.setVehicle(this);*/
 //turnCheck checks to see if a given vehicle can turn right
 // will call turnRight() if it can, otherwise nothing
-void Vehicle::turnCheck(){}
+//void Vehicle::turnCheck(){}
 
 
 //turnRight will take in a vehicle pointer and start the right turn
 //
 //Parameter - Vehicle *veh
-void Vehicle::turnRight(Vehicle *veh){}
+//void Vehicle::turnRight(Vehicle *veh){}
 
 
 //getDir returns the current direction of the vehicle
@@ -150,7 +150,7 @@ void Vehicle::placeVehicle(Section *start){
   //set that sections occupied boolean to true and assign the vehicle to the section
   start->setOccupied(true);
   start->setVehicle(this);
-  
+
   //set the previous section to true and assign the vehicle to that section
   start->getPrevious()->setOccupied(true);
   start->getPrevious()->setVehicle(this);

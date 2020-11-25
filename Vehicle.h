@@ -28,26 +28,21 @@ class Vehicle : public VehicleBase {
     public:
         Vehicle(VehicleType type, Direction originalDirection, int size, bool rightTurn);
         ~Vehicle();
-        void moveCheck();
-        void moveForward(Vehicle* veh);
-        void turnCheck();
-        void turnRight(Vehicle* veh);
 
         Direction getDir();
         void setDir(Direction newDir);
 
         int getSize();
 
-        bool getGreenLight();
-        bool getYellowLight();
-        void setTurningState(int);
-
         void setHead(Section* head);
         void setTail(Section* tail);
         Section* getHead();
         Section* getTail();
 
+        void setTurningState(int);
         int getTurningState();
+
+
         void removeVehicle(Vehicle* done);
 
         void placeVehicle(Section* start);
