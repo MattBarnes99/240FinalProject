@@ -3,11 +3,17 @@
 
 #include "Section.h"
 #include "TrafficLight.h"
+#include "Vehicle.h"
 #include <string>
 
 using namespace std;
 
-class Intersection {
+class Intersection : public Section{
+	
+	private:
+		Section *right;
+	
+	
 	public:
 		string direction;
 		Intersection* north;
@@ -19,6 +25,10 @@ class Intersection {
 
 		Intersection() {};
 		~Intersection() {};
+		
+		void setRight(Section *right);
+		
+};
 
 		inline void setDirection(string theDirection) {direction = theDirection;};
 		inline void setNorth(Intersection* northIS) {north = northIS;};

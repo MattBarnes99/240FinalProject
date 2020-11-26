@@ -12,6 +12,10 @@ class Section {
 		Section* previous;
 		bool occupied;
 		VehicleBase* vehicleHere;
+		Section *next;
+		Section *previous;
+		bool occupied;
+		VehicleBase *vehicleHere;
 		string name;
 
 		Section() {};
@@ -22,8 +26,12 @@ class Section {
 		inline string getName() {return name;};
 		void setVehicle(VehicleBase* newVehicle);
 		void setOccupied();
+
 		void setNext(Section* nextTile);
 		void setPrevious(Section* prevTile);
+
+		void setNext(Section *nextTile);
+		void setPrevious(Section *prevTile);
 };
 
 #endif

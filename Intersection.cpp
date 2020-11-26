@@ -8,5 +8,10 @@ using namespace std;
 //Intersection::Intersection() : Section() {};
 
 //Intersection::~Intersection() {};
+Intersection::Intersection(): Section() {};
+
+Intersection::~Intersection(){};
+
+void Intersection::setRight(Section *right){this->right = right;}
 
 #endif

@@ -3,8 +3,8 @@
 
 
 #include "VehicleBase.h"
-//#include "TrafficLight.h"
-//#include "Section.h"
+#include "TrafficLight.h"
+#include "Section.h"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -13,8 +13,8 @@ using namespace std;
 
 class Vehicle : public VehicleBase {
     private:
-        //Section *head;
-        //Section *tail;
+        Section *head;
+        Section *tail;
         int size;
         void setOccupied();
         bool turningState;
@@ -42,15 +42,15 @@ class Vehicle : public VehicleBase {
         bool getYellowLight();
         void setTurningState(bool);
 
-        //void setHead(Section *head);
-        //void setTail(Section *tail);
-        //Section * getHead();
-        //Section * getTail();
+        void setHead(Section *head);
+        void setTail(Section *tail);
+        Section * getHead();
+        Section * getTail();
 
         bool getTurningState();
         void removeVehicle(Vehicle *done);
 
-        //void placeVehicle(Section *start);
+        void placeVehicle(Section *start);
 
 
 };

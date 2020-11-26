@@ -5,10 +5,14 @@
 
 using namespace std;
 
-TrafficLight::TrafficLight(string light_color, int green, int yellow)
+TrafficLight::TrafficLight(LightColor light_color, int green, int yellow)
 	: color{light_color},
 	  greenLength{green},
-	  yellowLength{yellow}
+	  greenTimeLeft{green},
+	  yellowLength{yellow},
+	  yellowTimeLeft{yellow},
+	  redLength{yellow+green},
+	  redTimeLeft{yellow+green}
 	{}
 
 TrafficLight::TrafficLight(const TrafficLight& other)
@@ -16,6 +20,31 @@ TrafficLight::TrafficLight(const TrafficLight& other)
 	  greenLength{other.greenLength},
 	  yellowLength{other.yellowLength}
 	{}
+
+TrafficLight::TrafficLight(){}
+
+void TrafficLight::decrement(){
+	if (color == LightColor::green && greenTimeLeft > 0){
+		greenTimeLeft--;
+		if (greenTimeLeft == 0){
+			color = LightColor::yellow;
+			greenTimeLeft = greenLength;	
+		}
+	}else if (color == LightColor::yellow && yellowTimeLeft > 0){
+		yellowTimeLeft--;
+		if (yellowTimeLeft == 0){
+			color = LightColor::red;
+			yellowTimeLeft = yellowLength;	
+		}
+	}else if (color == LightColor::red && redTimeLeft > 0){
+		redTimeLeft--;
+		if (redTimeLeft == 0){
+			color = LightColor::green;
+			redTimeLeft = redLength;	
+		}
+	}
+
+}
 
 TrafficLight::~TrafficLight() {}
 
