@@ -102,14 +102,14 @@ void Lane::move(Section* sec, int index, LightColor color, int yellowTimeLeft){
 			turn(sec);
 		//call the moveForward method if the turn choice is false
 		}else{
-			moveForward();
+			moveForward(sec);
 		}
 	}
 	//Check to see if vehicle is immediately before the intersection
 	else if (index == (size/2-1)){
 		//moveForward if the turn choice is false and the vehicle has a green light
 		if (color == LightColor::green && sec->getVehicle()->getTurnChoice() == false){
-			moveForward();
+			moveForward(sec);
 		//turn Right if the vehicle has a green light and the turnChoice is true
 		}else if (color == LightColor::green && sec->getVehicle()->getTurnChoice() == true){
 			turn(sec);
@@ -117,15 +117,15 @@ void Lane::move(Section* sec, int index, LightColor color, int yellowTimeLeft){
 		}else if (color == LightColor::yellow && sec->getVehicle()->getTurnChoice() == false){
 			//Check if car has enough time to make it through the intersection before red
 			if (sec->getVehicle()->getSize() == 2 && yellowTimeLeft >= 4){
-				moveForward();
+				moveForward(sec);
 			}
 			//Check if suv has enough time to make it through the intersection before red
 			else if (sec->getVehicle()->getSize() == 3 && yellowTimeLeft >= 5){
-				moveForward();
+				moveForward(sec);
 			}
 			//Check if truck has enough time to make it through the intersection before red
 			else if (sec->getVehicle()->getSize() == 4 && yellowTimeLeft >= 6){
-				moveForward();
+				moveForward(sec);
 			}
 		}
 		//Condition of yellow light and turning right
@@ -190,6 +190,7 @@ void Lane::moveAfterInt(Section* sec){
 //
 void Lane::moveBeforeInt(Section* sec){
 	if (sec->getNext()->getOccupied() == false){
+		VehicleBase* veh = sec->getVehicle();
 		//update head of vehicle to next section
 		veh->setHead(sec->getNext());
 		sec->getNext()->setVehicle(veh);
@@ -201,6 +202,9 @@ void Lane::moveBeforeInt(Section* sec){
 	}
 }
 
+void Lane::moveForward(Section* sec) {
+	moveBeforeInt(sec);
+}
 
 //removeVehicle will delete a vehicle once it has completely left the inbounds
 // section of the lane
