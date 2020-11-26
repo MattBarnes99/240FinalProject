@@ -33,9 +33,11 @@ class Vehicle : public VehicleBase {
         void setDir(Direction newDir);
 
         int getSize();
+        bool getTurnChoice();
 
         void setHead(Section* head);
         void setTail(Section* tail);
+
         Section* getHead();
         Section* getTail();
 

@@ -5,6 +5,7 @@
 #include "Intersection.h"
 #include "VehicleBase.h"
 #include "Vehicle.h"
+#include "TrafficLight.h"
 #include <vector>
 
 using namespace std;
@@ -15,7 +16,8 @@ class Lane {
 		Section* start;
 		Section* end;
 		vector<Section*> lane;
-		int size; //size of the lane not counting offbounds sections
+		int size; //total size of lane
+		int halfsize; //number of sections befor intersection
 		void link(); // will create the next and previous links for the sections
 
 	public:
@@ -31,6 +33,8 @@ class Lane {
 		vector<VehicleBase*> getVehicleVector(); //vector to be passed to the animator
 
 		void advance(); //control for advancement of the vehicles in the lane
+
+		bool openSpace(); //check if space is open for vehicle generation
 
 };
 

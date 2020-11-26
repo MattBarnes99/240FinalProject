@@ -24,10 +24,6 @@ int main(){
     Intersection botLeft;
     Intersection topLeft;
 
-    botRight.setNext(&topRight);
-    botLeft.setNext(&topLeft);
-    botLeft.setRight(&botRight);
-    topLeft.setRight(&topRight);
 
     Lane northBound = Lane(8, &botRight, &topRight);
     Lane southBound = Lane(8, &topLeft, &botLeft);
@@ -43,7 +39,7 @@ int main(){
     Vehicle v7(VehicleType::car, Direction::south, 2, false);
     Vehicle v8(VehicleType::suv, Direction::south, 3, false);
 
-    
+
     anim.setVehiclesNorthbound(northBound.getVehicleVector());
     anim.setVehiclesSouthbound(southBound.getVehicleVector());
     anim.setVehiclesEastbound(eastBound.getVehicleVector());

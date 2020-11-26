@@ -18,127 +18,10 @@ Vehicle::Vehicle(VehicleType type, Direction originalDirection, int size, bool r
 Vehicle::~Vehicle(){}
 
 
-//moveCheck checks to see if a given vehicle can move to the next tile
-// will call moveForward if it can, otherwise nothing
-//
-void Vehicle::moveCheck(){
-
-  //not at the intersection
-  //needs to move forward at each clock tick when possible
-  if(if((this->getVehicleType() == VehicleType::car && !this->head at the intersection){
-    //according to clock tick -> move forward
-    this->moveForward();
-  }
-  //at the intersection
-  if((this->getVehicleType() == VehicleType::car && this->head at the intersection){ //specific index
-    if(LightColor::red){
-      //dont move
-    }
-    else if(LightColor::yellow){
-      if(yellowTimeLeft >= 3 ){
-        for(int i = 0; i < 4; i++){ //wat would be the correct syntax?
-          this->moveForward();      //make this according to clock tick?
-        }                            //would just be move forward because we are going to have an advance method
-      }
-    }
-    else if(LightColor::green){
-      if(greenTimeLeft >= 3 ){
-        for(int i = 0; i < 4; i++){ //wat would be the correct syntax?
-          this->moveForward();      //make this according to clock tick?
-        }
-      }
-    }
-  }
-  if((this->getVehicleType() == VehicleType::suv && this->head at the intersection){ //specific index
-    if(LightColor::red){
-      //dont move
-    }
-    else if(LightColor::yellow){
-      if(yellowTimeLeft >= 5 ){
-        for(int i = 0; i < 6; i++){ //wat would be the correct syntax?
-          this->moveForward();      //make this according to clock tick?
-        }
-      }
-    }
-    else if(LightColor::green){
-      if(greenTimeLeft >= 5 ){
-        for(int i = 0; i < 6; i++){ //wat would be the correct syntax?
-          this->moveForward();      //make this according to clock tick?
-        }
-      }
-    }
-  }
-  if((this->getVehicleType() == VehicleType::truck && this->head at the intersection){ //specific index
-    if(LightColor::red){
-      //dont move
-    }
-    else if(LightColor::yellow){
-      if(yellowTimeLeft >= 6 ){
-        for(int i = 0; i < 7; i++){ //wat would be the correct syntax?
-          this->moveForward();      //make this according to clock tick?
-        }
-      }
-    }
-    else if(LightColor::green){
-      if(greenTimeLeft >= 6 ){
-        for(int i = 0; i < 7; i++){ //wat would be the correct syntax?
-          this->moveForward();      //make this according to clock tick?
-        }
-      }
-    }
-  }
-  if()
-
-  //check light - if green,
-  //check vehicles head
-  // see if the next section after head is occupied
-  // if not occupied - move
-
-  // if yellow, check if can exit intersection before turn red
-  // if not, don't move,
-  // if yes, check section after head section if it is occupied
-  // if it is not occupied, move
-
-  //^ will need two different checks for the yellow light because a vehicle
-  // getting through the intersection before red depends on if it is going straight or turning
-  // for example, a car takes 4 ticks to get through going straight and 3 when turning.
-
-  //check if light is red
-  // if it is, don't move
-
-}
 
 
-//moveForward will take in a vehicle pointer and move the vehicle forward one space
-//
-//Parameter - Vehicle *veh
-//
-void Vehicle::moveForward(Vehicle *veh){ //sum bout a setVehicle that needs to be included?
-  if(this->getVehicleType() == VehicleType::car && this->head.next.setOccupied() == false){
-    this->head = head.next;
-    head.setOccupied();
-    this->tail.setOccupied = false;
-    this->tail = tail.next;
-    tail.setOccupied();
-  }
-  else if(this->getVehicleType() == VehicleType::suv && this->head.next.setOccupied() == false){
-    this->head = head.next;
-    head.setOccupied();
-    head->previous->setOccupied();
-    this->tail.setOccupied = false;
-    this->tail = tail.next;
-    tail.setOccupied();
-  }
-  else if(this->getVehicleType() == VehicleType::truck && this->head.next.setOccupied() == false){
-    this->head = head.next;
-    head.setOccupied();
-    head->previous->setOccupied();
-    head->previous->previous->setOccupied();
-    this->tail.setOccupied = false;
-    this->tail = tail.next;
-    tail.setOccupied();
-  }
-}
+
+
 
 
 /*head.next.setOccupied = true;
@@ -172,6 +55,10 @@ void Vehicle::setDir(Direction newDir){curDir = newDir;}
 
 //getSize returns the size of the vehicle
 int Vehicle::getSize(){return size;}
+
+
+//getTurnChoice returns the bool turnChoice of the vehicle
+bool Vehicle::getTurnChoice(){return turnChoice;}
 
 
 //getGreenLight returns a boolean value of true if the TrafficLight is green
