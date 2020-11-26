@@ -2,41 +2,23 @@
 #define __INTERSECTION_H__
 
 #include "Section.h"
-#include "TrafficLight.h"
-#include "Vehicle.h"
-#include <string>
+#include "VehicleBase.h"
 
 using namespace std;
 
 class Intersection : public Section{
 	
 	private:
+		
 		Section *right;
 	
-	
 	public:
-		string direction;
-		Intersection* north;
-		Intersection* south;
-		Intersection* east;
-		Intersection* west;
-		TrafficLight* NSLight;
-		TrafficLight* EWLight;
-
-		Intersection() {};
-		~Intersection() {};
+		
+		Intersection();
+		~Intersection();
 		
 		void setRight(Section *right);
 		
-};
-
-		inline void setDirection(string theDirection) {direction = theDirection;};
-		inline void setNorth(Intersection* northIS) {north = northIS;};
-		inline void setSouth(Intersection* southIS) {south = southIS;};
-		inline void setEast(Intersection* eastIS) {east = eastIS;};
-		inline void setWest(Intersection* westIS) {west = westIS;};
-		inline void setNSTrafficLight(TrafficLight* NS) {NSLight = NS;};
-		inline void setEWTrafficLight(TrafficLight* EW) {EWLight = EW;};
 };
 
 #endif

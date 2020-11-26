@@ -14,6 +14,7 @@ string preprocess(string line){
 //Empty Constructor
 ConfigParser::ConfigParser(){}
 
+
 // Constructor takes in input file and converts it to a map
 //
 //Parameter - string input file

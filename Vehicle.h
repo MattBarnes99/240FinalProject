@@ -17,7 +17,7 @@ class Vehicle : public VehicleBase {
         Section *tail;
         int size;
         void setOccupied();
-        bool turningState;
+        int turningState = -1;
         bool turnChoice;
         bool greenLight = false;
         bool yellowLight = false;
@@ -28,29 +28,26 @@ class Vehicle : public VehicleBase {
     public:
         Vehicle(VehicleType type, Direction originalDirection, int size, bool rightTurn);
         ~Vehicle();
-        void moveCheck();
-        void moveForward(Vehicle *veh);
-        void turnCheck();
-        void turnRight(Vehicle *veh);
 
         Direction getDir();
         void setDir(Direction newDir);
 
         int getSize();
+        bool getTurnChoice();
 
-        bool getGreenLight();
-        bool getYellowLight();
-        void setTurningState(bool);
+        void setHead(Section* head);
+        void setTail(Section* tail);
 
-        void setHead(Section *head);
-        void setTail(Section *tail);
-        Section * getHead();
-        Section * getTail();
+        Section* getHead();
+        Section* getTail();
 
-        bool getTurningState();
-        void removeVehicle(Vehicle *done);
+        void setTurningState(int);
+        int getTurningState();
 
-        void placeVehicle(Section *start);
+
+        void removeVehicle(Vehicle* done);
+
+        void placeVehicle(Section* start);
 
 
 };

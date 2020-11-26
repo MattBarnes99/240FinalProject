@@ -7,9 +7,10 @@
 #include "Clock.h"
 #include "TrafficLight.h"
 #include "Lane.h"
-#include "randomGen.h"
-#include "Section.h"
 #include "Vehicle.h"
+#include "randomGen.h"
+#include "Intersection.h"
+#include "Section.h"
 #include <iostream>
 
 using namespace std;
