@@ -10,7 +10,7 @@ using namespace std;
 
 Simulation::Simulation(){}
 
-Simulation::Simulation(Animator anim,ConfigParser config,Lane north, Lane south, Lane east, Lane west, TrafficLight NS, TrafficLight EW){}
+Simulation::Simulation(Animator anim,ConfigParser config, Lane north, Lane south, Lane east, Lane west, TrafficLight NS, TrafficLight EW){}
 
 Simulation::~Simulation(){}
 
@@ -19,25 +19,27 @@ void Simulation::run(){}
 int main(){
     Animator anim(8);
 
-    Intersection botRight;
-    Intersection topRight;
-    Intersection botLeft;
-    Intersection topLeft;
+    Intersection botRight = Intersection();
+    Intersection topRight = Intersection();
+    Intersection botLeft = Intersection();
+    Intersection topLeft = Intersection();
 
 
-    Lane northBound = Lane(8, &botRight, &topRight);
-    Lane southBound = Lane(8, &topLeft, &botLeft);
-    Lane eastBound = Lane(8, &botLeft, &botRight);
-    Lane westBound = Lane(8, &topRight, &topLeft);
+    Lane northBound = Lane(8, Direction::north, &botRight, &topRight);
+    Lane southBound = Lane(8, Direction::south, &topLeft, &botLeft);
+    Lane eastBound = Lane(8, Direction::east, &botLeft, &botRight);
+    Lane westBound = Lane(8, Direction::west, &topRight, &topLeft);
 
-    Vehicle v1(VehicleType::car, Direction::east, 2, false);
-    Vehicle v2(VehicleType::truck, Direction::east, 4, false);
-    Vehicle v3(VehicleType::car, Direction::west, 2, false);
-    Vehicle v4(VehicleType::suv, Direction::west, 3, false);
-    Vehicle v5(VehicleType::car, Direction::north, 2, false);
-    Vehicle v6(VehicleType::truck, Direction::north, 4, false);
-    Vehicle v7(VehicleType::car, Direction::south, 2, false);
-    Vehicle v8(VehicleType::suv, Direction::south, 3, false);
+
+
+    Vehicle v1 = Vehicle(VehicleType::car, Direction::east, 2, false);
+    Vehicle v2 = Vehicle(VehicleType::truck, Direction::east, 4, false);
+    Vehicle v3 = Vehicle(VehicleType::car, Direction::west, 2, false);
+    Vehicle v4 = Vehicle(VehicleType::suv, Direction::west, 3, false);
+    Vehicle v5 = Vehicle(VehicleType::car, Direction::north, 2, false);
+    Vehicle v6 = Vehicle(VehicleType::truck, Direction::north, 4, false);
+    Vehicle v7 = Vehicle(VehicleType::car, Direction::south, 2, false);
+    Vehicle v8 = Vehicle(VehicleType::suv, Direction::south, 3, false);
 
 
     anim.setVehiclesNorthbound(northBound.getVehicleVector());
@@ -50,8 +52,9 @@ int main(){
 
     anim.draw(1);
 
-    v1.placeVehicle(northBound.getStart());
-
+    northBound.placeVehicle(&v1);
+    southBound.placeVehicle(&v2);
+    
     anim.setVehiclesNorthbound(northBound.getVehicleVector());
     anim.setVehiclesSouthbound(southBound.getVehicleVector());
     anim.setVehiclesEastbound(eastBound.getVehicleVector());

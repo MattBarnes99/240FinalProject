@@ -6,7 +6,7 @@
 using namespace std;
 
 //Empty Consructor
-Section::Section(){};
+Section::Section(): name{"section"} {};
 
 
 //Destructor
@@ -17,7 +17,7 @@ Section::~Section(){};
 //
 //Parameter - VehicleBase* newVehicle
 //
-void Section::setVehicle(VehicleBase* newVehicle){vehicleHere = newVehicle;}
+void Section::setVehicle(Vehicle* newVehicle){vehicleHere = newVehicle;}
 
 
 //setOccupied sets the occupied instance varaible to the given bool
@@ -51,6 +51,6 @@ bool Section::getOccupied(){return occupied;}
 //getVehicle returns a VehicleBase pointer of the given section
 //
 //return - VehicleBase* here
-VehicleBase* Section::getVehicle(){return vehicleHere;}
+Vehicle* Section::getVehicle(){return vehicleHere;}
 
 #endif

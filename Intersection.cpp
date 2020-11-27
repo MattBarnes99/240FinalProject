@@ -6,16 +6,28 @@
 using namespace std;
 
 //Empty constructor
-Intersection::Intersection(): Section() {};
+Intersection::Intersection(): Section(){
+    name = "intersection";
+};
 
 
 //Destructor
 Intersection::~Intersection(){};
 
 
-//setRight sets the right instance variable for the intersection
-// needed for the right turn operations
-//
-void Intersection::setRight(Section *right){this->right = right;}
+//setters for section pointers
+void Intersection::setNorth(Section *sec){north = sec;}
+void Intersection::setSouth(Section *sec){south = sec;}
+void Intersection::setEast(Section *sec){east = sec;}
+void Intersection::setWest(Section *sec){west = sec;}
+
+
+//getters for section pointers
+Section* Intersection::getNorth(){return north;}
+Section* Intersection::getSouth(){return south;}
+Section* Intersection::getEast(){return east;}
+Section* Intersection::getWest(){return west;}
+
+
 
 #endif

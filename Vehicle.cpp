@@ -18,29 +18,6 @@ Vehicle::Vehicle(VehicleType type, Direction originalDirection, int size, bool r
 Vehicle::~Vehicle(){}
 
 
-
-
-
-
-
-
-/*head.next.setOccupied = true;
-head = head.next;
-head.setVehicle = this;
-tail.setOccupied = false;
-tail = tail.next;
-tail.setVehicle(this);*/
-//turnCheck checks to see if a given vehicle can turn right
-// will call turnRight() if it can, otherwise nothing
-//void Vehicle::turnCheck(){}
-
-
-//turnRight will take in a vehicle pointer and start the right turn
-//
-//Parameter - Vehicle *veh
-//void Vehicle::turnRight(Vehicle *veh){}
-
-
 //getDir returns the current direction of the vehicle
 //
 Direction Vehicle::getDir(){return curDir;}
@@ -61,15 +38,6 @@ int Vehicle::getSize(){return size;}
 bool Vehicle::getTurnChoice(){return turnChoice;}
 
 
-//getGreenLight returns a boolean value of true if the TrafficLight is green
-//
-bool Vehicle::getGreenLight(){return greenLight;}
-
-
-//getYellowLight returns a boolean value of true if the TrafficLight is yellow
-bool Vehicle::getYellowLight(){return yellowLight;}
-
-
 //setTurningState sets the turning boolean to true during the turn movement of a vehicle
 //
 //Parameter - bool state
@@ -82,50 +50,6 @@ void Vehicle::setTurningState(int state){this->turningState = state;}
 //Return - bool turningState
 //
 int Vehicle::getTurningState(){return turningState;}
-
-
-//removeVehicle is used to dynamically delete a vehicle object once it fully leaves the visible road section
-//
-//Parameter - Vehicle *done
-//
-void Vehicle::removeVehicle(Vehicle *done){}
-
-
-//placeVehicle method places the vehicle at the starting section of a given lane
-//  will backfill the rest of the sections on the invisible sections
-//
-//Parameter - Section *start
-//
-void Vehicle::placeVehicle(Section *start){
-
-  //set the head of the vehicle to the given section
-  this->head = start;
-
-  //set that sections occupied boolean to true and assign the vehicle to the section
-  start->setOccupied(true);
-  start->setVehicle(this);
-
-  //set the previous section to true and assign the vehicle to that section
-  start->getPrevious()->setOccupied(true);
-  start->getPrevious()->setVehicle(this);
-
-  //If vehicle is car, set the tail to the second section
-  if (this->getVehicleType() == VehicleType::car){
-    this->setTail(start->getPrevious());
-  //If vehicle is suv, assign another section and set tail to third section
-  }else if(this->getVehicleType() == VehicleType::suv){
-    start->getPrevious()->getPrevious()->setOccupied(true);
-    start->getPrevious()->getPrevious()->setVehicle(this);
-    this->setTail(start->getPrevious()->getPrevious());
-  //If vehicle is truck, assign two more sections and set tail to fourth section
-  }else{
-    start->getPrevious()->getPrevious()->setOccupied(true);
-    start->getPrevious()->getPrevious()->setVehicle(this);
-    start->getPrevious()->getPrevious()->getPrevious()->setOccupied(true);
-    start->getPrevious()->getPrevious()->getPrevious()->setVehicle(this);
-    this->setTail(start->getPrevious()->getPrevious()->getPrevious());
-  }
-}
 
 
 //setHead sets the head pointer for a vehicle

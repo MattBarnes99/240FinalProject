@@ -4,7 +4,7 @@
 
 #include "VehicleBase.h"
 #include "TrafficLight.h"
-#include "Section.h"
+#include "Section.fwd.h"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -43,11 +43,6 @@ class Vehicle : public VehicleBase {
 
         void setTurningState(int);
         int getTurningState();
-
-
-        void removeVehicle(Vehicle* done);
-
-        void placeVehicle(Section* start);
 
 
 };

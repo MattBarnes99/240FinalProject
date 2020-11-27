@@ -11,7 +11,7 @@ class VehicleBase
    public:
       static int vehicleCount;
 
-   private:
+   protected:
       int         vehicleID;
       VehicleType vehicleType;
       Direction   vehicleDirection;
