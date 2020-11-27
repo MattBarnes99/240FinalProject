@@ -24,10 +24,8 @@ class Lane {
 		void link(); // will create the next and previous links for the sections
 		void move(Section* sec, int index, LightColor color, int yellowTimeLeft);
 		void turn(Section* sec);
-		void moveAfterInt(Section* sec);
-		void moveBeforeInt(Section* sec);
 		void removeVehicle(Section* sec);
-		void moveForward(Section* sec);
+		void moveForward(Section* sec, int index);
 
 	public:
 

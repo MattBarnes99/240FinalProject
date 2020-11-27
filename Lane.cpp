@@ -128,9 +128,12 @@ void Lane::placeVehicle(VehicleBase* veh){
 //
 void Lane::advance(LightColor color, int yellowTimeLeft){
 	for (int i = lane.size()-1; i > -1; i--){
+		//check there is a vehcile in the section
 		if (lane[i]->getVehicle() != nullptr){
-			if (lane[i]->getVehicle()->getHead() == lane[i]){
-				move(lane[i],i,color,yellowTimeLeft);
+			//Check the vehicle at that section is the head of the vehicle
+			//Check the vehicle's AlreadyMoved boolean is false
+			if (lane[i]->getVehicle()->getHead() == lane[i] && lane[i]->getVehicle()->getAlreadyMoved() == false){
+				move(lane[i], i, color, yellowTimeLeft);
 			}
 		}else{
 			continue;
@@ -141,42 +144,30 @@ void Lane::advance(LightColor color, int yellowTimeLeft){
 // move contains all of the logic to decide how a vehicle should move 
 // after being called by the advance method
 //
-// Parameter - Section* sec is the lane section to move the vehicle from
-// Parameter - int index is the index of the given section in the lane
-// Parameter - LightColor color is the color of the light for this lane at 
-// this moment
-// Parameter - int yellowTimeLeft is how much time is left for the yellow 
-// light for this lane
+//Parameters:
+//		Section* sec - section containing head of vehicle
+//		int index - index of section in lane
+//		LightColor color - current TrafficLight LightColor
+// 		int yellowTimeLeft - time left on yellow if LightColor == yellow
 //
 void Lane::move(Section* sec, int index, LightColor color, int yellowTimeLeft){
 
-	//Check to see if vehicle is after the intersection
-	if (index >= (size/2+2)){
-		moveAfterInt(sec);
+	//Check for in or after intersection and going straight	
+	if (index >= size/2 && lane[index+1]->getOccupied() == false && sec->getVehicle()->getTurnChoice() == false){
+		moveForward(sec,index);
+		removeVehicle(lane[index+1]);
 	}
 
-	//Check to see if the vehicle is in the second space of the intersection
-	else if (index == size/2
-	){
-
+	//Before the intersection
+	else if (index < size/2-1 && lane[index+1]->getOccupied() == false){
+		moveForward(sec,index);
 	}
 
-	//Check to see if vehicle is in the first space of the intersection
-	else if (index == size/2){
-		//call turn method if the turnChoice of the vehicle is true
-		if (sec->getVehicle()->getTurnChoice()){
-			turn(sec);
-		//call the moveForward method if the turn choice is false
-		}else{
-			moveForward(sec);
-		}
-	}
-
-	//Check to see if vehicle is immediately before the intersection
-	else if (index == (size/2-1)){
+	//Vehicle is about to enter intersection
+	else if (index == (size/2-1) && sec->getNext()->getOccupied() == false){
 		//moveForward if the turn choice is false and the vehicle has a green light
 		if (color == LightColor::green && sec->getVehicle()->getTurnChoice() == false){
-			moveBeforeInt(sec);
+			moveForward(sec,index);
 		//turn Right if the vehicle has a green light and the turnChoice is true
 		}else if (color == LightColor::green && sec->getVehicle()->getTurnChoice() == true){
 			turn(sec);
@@ -184,15 +175,15 @@ void Lane::move(Section* sec, int index, LightColor color, int yellowTimeLeft){
 		}else if (color == LightColor::yellow && sec->getVehicle()->getTurnChoice() == false){
 			//Check if car has enough time to make it through the intersection before red
 			if (sec->getVehicle()->getSize() == 2 && yellowTimeLeft >= 4){
-				moveBeforeInt(sec);
+				moveForward(sec,index);
 			}
 			//Check if suv has enough time to make it through the intersection before red
 			else if (sec->getVehicle()->getSize() == 3 && yellowTimeLeft >= 5){
-				moveBeforeInt(sec);
+				moveForward(sec,index);
 			}
 			//Check if truck has enough time to make it through the intersection before red
 			else if (sec->getVehicle()->getSize() == 4 && yellowTimeLeft >= 6){
-				moveBeforeInt(sec);
+				moveForward(sec,index);
 			}
 		}
 		//Condition of yellow light and turning right
@@ -210,34 +201,30 @@ void Lane::move(Section* sec, int index, LightColor color, int yellowTimeLeft){
 			}
 		}
 	}
-	
-	//Else, vehicle is before intersection
-	else{
-		moveBeforeInt(sec);
+
+	//Vehicle is in first place of intersection and turning
+	else if (index == size/2 && sec->getVehicle()->getTurnChoice()){
+		turn(sec);
 	}
 }
 
 
-
-// moveForward is used for forward movement of a vehicle
-// it is called because special movement calls are needed 
-// when using intersection sections
+// moveForward will move vehicles forward that are immediately before or 
+// in the intersection
 //
-// Parameter - Intersection* intsec is the intersection that 
-// the vehicle is moving from (from intOne to intTwo)
+// Parameter - Section* sec is the section that the vehicle is moving from
 //
-void Lane::moveForward(Intersection* intsec){
-	if (intTwo->getOccupied() == false){
-		VehicleBase* veh = intOne->getVehicle();
-		//update head of vehicle to next section
-		veh->setHead(intTwo);
-		intTwo->setVehicle(veh);
-		intTwo->setOccupied(true);
-		//update tail to next section
-		veh->getTail()->setOccupied(false);
-		veh->getTail()->setVehicle(nullptr);
-		veh->setTail(veh->getTail()->getNext());
-	}
+void Lane::moveForward(Section* sec,int index){
+	//Set alreadyMoved bool to true for vehicle
+	sec->getVehicle()->setAlreadyMoved(true);
+	//update head of vehicle to next section
+	sec->getVehicle()->setHead(lane[index+1]);
+	lane[index+1]->setVehicle(sec->getVehicle());
+	lane[index+1]->setOccupied(true);
+	//update tail to next section
+	sec->getVehicle()->getTail()->setOccupied(false);
+	sec->getVehicle()->getTail()->setVehicle(nullptr);
+	sec->getVehicle()->setTail(lane[1+index-(sec->getVehicle()->getSize())]);
 }
 
 
@@ -246,62 +233,16 @@ void Lane::moveForward(Intersection* intsec){
 // Parameter - Section* sec is the section that the vehicle is turning from
 //
 void Lane::turn(Section* sec){
+	//Set alreadyMoved bool to true for vehicle
+	sec->getVehicle()->setAlreadyMoved(true);
+
+
 	//if(head is at the int)
 		//head moves up
 		//tail is now tail-> getNext
 		//
 }
 
-
-
-// moveAfterInt will move vehicles forward if they are in the second place of
-// the intersection or after, and will remove vehicles if they are offbounds
-//
-// Parameter - Section* sec is the section that the vehicle is moving from
-//
-void Lane::moveAfterInt(Section* sec){
-
-	VehicleBase* veh = sec->getVehicle();
-	//update head of vehicle to next section
-	veh->setHead(sec->getNext());
-	sec->getNext()->setVehicle(veh);
-	sec->getNext()->setOccupied(true);
-	//update tail to next section
-	veh->getTail()->setOccupied(false);
-	veh->getTail()->setVehicle(nullptr);
-	veh->setTail(veh->getTail()->getNext());
-
-	//check to see if vehicle is offbounds and should be deleted
-	removeVehicle(sec->getNext()); 
-}
-
-
-// moveBeforeInt will move vehicles forward that are before the intersection
-//
-// Parameter - Section* sec is the section that the vehicle is moving from
-//
-void Lane::moveBeforeInt(Section* sec){
-	if (sec->getNext()->getOccupied() == false){
-		VehicleBase* veh = sec->getVehicle();
-		//update head of vehicle to next section
-		veh->setHead(sec->getNext());
-		sec->getNext()->setVehicle(veh);
-		sec->getNext()->setOccupied(true);
-		//update tail to next section
-		veh->getTail()->setOccupied(false);
-		veh->getTail()->setVehicle(nullptr);
-		veh->setTail(veh->getTail()->getNext());
-	}
-}
-
-// moveForward will move vehicles forward that are immediately before or 
-// in the intersection
-//
-// Parameter - Section* sec is the section that the vehicle is moving from
-//
-void Lane::moveForward(Section* sec) {
-	moveBeforeInt(sec);
-}
 
 // removeVehicle will delete a vehicle once it has completely left the inbounds
 // section of the lane
