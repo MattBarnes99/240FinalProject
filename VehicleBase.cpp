@@ -90,4 +90,18 @@ Section* VehicleBase::getHead(){return this->head;}
 Section* VehicleBase::getTail(){return this->tail;}
 
 
+//setAlreadyMoved sets the alreadyMoved instance variable for a vehicle
+//
+//Parameter - bool moved
+//
+void VehicleBase::setAlreadyMoved(bool moved){this->alreadyMoved = moved;}
+
+
+//getAlreadyMoved returns the alreadyMoved instance variable for a vehicle
+//
+//return - bool alreadyMoved
+//
+bool VehicleBase::getAlreadyMoved(){return alreadyMoved;}
+
+
 #endif

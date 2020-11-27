@@ -19,7 +19,7 @@ class VehicleBase
       int         vehicleID;
       VehicleType vehicleType;
       Direction   vehicleDirection;
-
+      bool alreadyMoved;
       Section *head;
       Section *tail;
       int size;
@@ -38,7 +38,8 @@ class VehicleBase
       inline VehicleType getVehicleType() const { return this->vehicleType; }
       inline Direction getVehicleOriginalDirection() const { return this->vehicleDirection; }
 
-
+      void setAlreadyMoved(bool moved);
+      bool getAlreadyMoved();
 
       Direction getDir();
       void setDir(Direction newDir);

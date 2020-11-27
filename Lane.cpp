@@ -374,4 +374,14 @@ void Lane::link(){
 	}
 }
 
+
+//resetMoveBool resets all the alreadyMoved booleans for the vehicles in the lane.
+//to be called on all the lanes after all lanes have advanced.
+//
+void Lane::resetMoveBool(){
+	for (int i = 0; i < size; i++){
+		lane[i]->getVehicle()->setAlreadyMoved(false);
+	}
+}
+
 #endif
