@@ -2,8 +2,7 @@
 #define __SECTION_H__
 
 #include <string>
-#include <vector>
-#include "Vehicle.fwd.h"
+#include "VehicleBase.fwd.h"
 
 using namespace std;
 
@@ -14,7 +13,7 @@ class Section {
 		Section* next;
 		Section* previous;
 		bool occupied = false;
-		Vehicle* vehicleHere = nullptr;
+		VehicleBase* vehicleHere = nullptr;
 		string name;
 
 	public:
@@ -25,8 +24,8 @@ class Section {
 		inline Section* getNext() {return next;};
 		inline Section* getPrevious() {return previous;};
 		inline string getName() {return name;};
-		void setVehicle(Vehicle* newVehicle);
-		Vehicle* getVehicle();
+		void setVehicle(VehicleBase* newVehicle);
+		VehicleBase* getVehicle();
 		void setOccupied(bool state);
 		bool getOccupied();
 		void setNext(Section *nextTile);

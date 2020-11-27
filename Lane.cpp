@@ -83,9 +83,9 @@ Lane::~Lane(){
 //placeVehicle method places the vehicle at the starting section of the lane
 //  will backfill the rest of the sections on the offbounds sections
 //
-//Parameter - Vehicle* veh
+//Parameter - VehicleBase* veh
 //
-void Lane::placeVehicle(Vehicle* veh){
+void Lane::placeVehicle(VehicleBase* veh){
 
   //set the head of the vehicle to the start section
   veh->setHead(start);
@@ -225,7 +225,7 @@ void Lane::turn(Section* sec){
 //
 void Lane::moveAfterInt(Section* sec){
 
-	Vehicle* veh = sec->getVehicle();
+	VehicleBase* veh = sec->getVehicle();
 	//update head of vehicle to next section
 	veh->setHead(sec->getNext());
 	sec->getNext()->setVehicle(veh);
@@ -245,7 +245,7 @@ void Lane::moveAfterInt(Section* sec){
 //
 void Lane::moveBeforeInt(Section* sec){
 	if (sec->getNext()->getOccupied() == false){
-		Vehicle* veh = sec->getVehicle();
+		VehicleBase* veh = sec->getVehicle();
 		//update head of vehicle to next section
 		veh->setHead(sec->getNext());
 		sec->getNext()->setVehicle(veh);

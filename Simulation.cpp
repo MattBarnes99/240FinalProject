@@ -32,14 +32,14 @@ int main(){
 
 
 
-    Vehicle v1 = Vehicle(VehicleType::car, Direction::east, 2, false);
-    Vehicle v2 = Vehicle(VehicleType::truck, Direction::east, 4, false);
-    Vehicle v3 = Vehicle(VehicleType::car, Direction::west, 2, false);
-    Vehicle v4 = Vehicle(VehicleType::suv, Direction::west, 3, false);
-    Vehicle v5 = Vehicle(VehicleType::car, Direction::north, 2, false);
-    Vehicle v6 = Vehicle(VehicleType::truck, Direction::north, 4, false);
-    Vehicle v7 = Vehicle(VehicleType::car, Direction::south, 2, false);
-    Vehicle v8 = Vehicle(VehicleType::suv, Direction::south, 3, false);
+    VehicleBase v1 = VehicleBase(VehicleType::car, Direction::east, 2, false);
+    VehicleBase v2 = VehicleBase(VehicleType::truck, Direction::east, 4, false);
+    VehicleBase v3 = VehicleBase(VehicleType::car, Direction::west, 2, false);
+    VehicleBase v4 = VehicleBase(VehicleType::suv, Direction::west, 3, false);
+    VehicleBase v5 = VehicleBase(VehicleType::car, Direction::north, 2, false);
+    VehicleBase v6 = VehicleBase(VehicleType::truck, Direction::north, 4, false);
+    VehicleBase v7 = VehicleBase(VehicleType::car, Direction::south, 2, false);
+    VehicleBase v8 = VehicleBase(VehicleType::suv, Direction::south, 3, false);
 
 
     anim.setVehiclesNorthbound(northBound.getVehicleVector());

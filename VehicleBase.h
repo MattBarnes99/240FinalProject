@@ -1,6 +1,9 @@
 #ifndef __VEHICLE_BASE_H__
 #define __VEHICLE_BASE_H__
 
+#include "Section.fwd.h"
+
+
 // enum: see http://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#S-enum
 enum class Direction   {north, south, east, west};
 enum class VehicleType {car, suv, truck};
@@ -11,12 +14,22 @@ class VehicleBase
    public:
       static int vehicleCount;
 
-   protected:
+   private:
+
       int         vehicleID;
       VehicleType vehicleType;
       Direction   vehicleDirection;
+
+      Section *head;
+      Section *tail;
+      int size;
+      int turningState = 0;
+      bool turnChoice;
+      Direction curDir;
+
    public:
-      VehicleBase(VehicleType type, Direction originalDirection);
+      
+      VehicleBase(VehicleType type, Direction originalDirection, int size, bool rightTurn);
       VehicleBase(const VehicleBase& other);
       ~VehicleBase();
 
@@ -24,6 +37,23 @@ class VehicleBase
 
       inline VehicleType getVehicleType() const { return this->vehicleType; }
       inline Direction getVehicleOriginalDirection() const { return this->vehicleDirection; }
+
+
+
+      Direction getDir();
+      void setDir(Direction newDir);
+
+      int getSize();
+      bool getTurnChoice();
+
+      void setHead(Section* head);
+      void setTail(Section* tail);
+
+      Section* getHead();
+      Section* getTail();
+
+      void setTurningState(int);
+      int getTurningState();
 };
 
 #endif

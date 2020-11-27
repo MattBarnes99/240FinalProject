@@ -4,7 +4,6 @@
 #include "Section.h"
 #include "Intersection.h"
 #include "VehicleBase.h"
-#include "Vehicle.h"
 #include "TrafficLight.h"
 #include <vector>
 
@@ -46,7 +45,7 @@ class Lane {
 
 		bool openSpace(); //check if space is open for vehicle generation
 
-		void placeVehicle(Vehicle* veh);
+		void placeVehicle(VehicleBase* veh);
 
 };
 
