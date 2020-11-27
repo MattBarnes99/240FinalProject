@@ -20,7 +20,9 @@ VehicleBase::VehicleBase(VehicleType type, Direction originalDirection, int size
 VehicleBase::VehicleBase(const VehicleBase& other)
     : vehicleID(other.vehicleID),
       vehicleType(other.vehicleType),
-      vehicleDirection(other.vehicleDirection)
+      vehicleDirection(other.vehicleDirection),
+      size(other.size),
+      turnChoice(other.turnChoice)
 {}
 
 
@@ -28,21 +30,23 @@ VehicleBase::VehicleBase(const VehicleBase& other)
 VehicleBase::~VehicleBase() {}
 
 
-//getDir returns the current direction of the vehicle
-//
-Direction VehicleBase::getDir(){return curDir;}
-
-
 //setDir sets the current direction to the new direction
 //
 //Parameter - Direction newDir
 //
-void VehicleBase::setDir(Direction newDir){curDir = newDir;}
+void VehicleBase::setDir(Direction newDir){vehicleDirection = newDir;}
 
 
 //getSize returns the size of the vehicle
 //
 int VehicleBase::getSize(){return size;}
+
+
+//setTurnChoice sets the bool turnChoice to the input
+//
+//Parameter - bool turn
+//
+void VehicleBase::setTurnChoice(bool turn){turnChoice = turn;}
 
 
 //getTurnChoice returns the bool turnChoice of the vehicle

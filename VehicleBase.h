@@ -25,7 +25,6 @@ class VehicleBase
       int size;
       int turningState = 0;
       bool turnChoice;
-      Direction curDir;
 
    public:
       
@@ -41,10 +40,11 @@ class VehicleBase
       void setAlreadyMoved(bool moved);
       bool getAlreadyMoved();
 
-      Direction getDir();
       void setDir(Direction newDir);
 
       int getSize();
+
+      void setTurnChoice(bool turn);
       bool getTurnChoice();
 
       void setHead(Section* head);
