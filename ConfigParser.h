@@ -16,6 +16,6 @@ class ConfigParser{
 
         ConfigParser(string filename);  // Creates a map from file
 
-        map<string,string> get();       // Returns map created from file
+        string get(string);       // Returns entry from
 
 };

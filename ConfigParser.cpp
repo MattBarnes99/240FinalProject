@@ -42,4 +42,4 @@ ConfigParser::ConfigParser(string filename){
 //get returns the map of input parameters
 //
 //return - map<string, string>
-map<string,string> ConfigParser::get(){return parameters;}
+string ConfigParser::get(string in){return parameters[in];}

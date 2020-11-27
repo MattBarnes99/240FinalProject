@@ -46,6 +46,8 @@ class Lane {
 
 		void placeVehicle(VehicleBase* veh);
 
+		Direction getDir();
+
 };
 
 #endif

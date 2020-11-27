@@ -17,6 +17,7 @@ class Simulation{
 
     private:
 
+        int seed;
         int maxSimulatedTime;
         int numSecBeforeIntersection;
         int greenTimeNS;
@@ -36,26 +37,15 @@ class Simulation{
         double propLeftTurnSuv;
         double propRightTurnTruck;
         double propLeftTurnTruck;
-
-        Lane north;
-        Lane south;
-        Lane east;
-        Lane west;
-
-        TrafficLight NS;
-        TrafficLight EW;
-
+        randomGen rand;
 
     public:
         
-        Simulation(Animator,ConfigParser,Lane north, Lane south, Lane east, Lane west, TrafficLight NS, TrafficLight EW);
-
+        Simulation(ConfigParser);
         Simulation();
-
-        ~Simulation();
-
-        void run();
-    
+        ~Simulation(); 
+        void run(int seed);
+        void makeVehicle(Lane*,double);
 };
 
 #endif

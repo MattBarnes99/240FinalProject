@@ -398,6 +398,11 @@ Section* Lane::getStart(){return start;}
 Section* Lane::getEnd(){return end;}
 
 
+//getDir returns the direction of the lane
+//
+Direction Lane::getDir(){return dir;}
+
+
 // link creates the next and previous links for each section in a lane
 //
 void Lane::link(){
