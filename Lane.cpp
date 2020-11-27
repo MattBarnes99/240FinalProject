@@ -2,6 +2,7 @@
 #define __LANE_CPP__
 
 #include "Lane.h"
+#include <iostream>
 
 using namespace std;
 
@@ -50,9 +51,8 @@ Lane::Lane(int halfsize, Direction dir, Intersection* intOne, Intersection* intT
 		lane.push_back(new Section());
 	}
 
-	//set the start and end pointers for the inbound sections
+	//set the start for the inbound sections
 	this->start = lane[4];
-	this->end = lane[lane.size()-4];
 
 	//call the private link method to set the next and previous sections for each tile
 	link();
@@ -88,7 +88,7 @@ Lane::~Lane(){
 void Lane::placeVehicle(VehicleBase* veh){
 
   //set the head of the vehicle to the start section
-  veh->setHead(start);
+  veh->setHead(lane[4]);
 
   //set that sections occupied boolean to true and assign the vehicle to the section
   start->setOccupied(true);
@@ -114,6 +114,8 @@ void Lane::placeVehicle(VehicleBase* veh){
     start->getPrevious()->getPrevious()->getPrevious()->setVehicle(veh);
     veh->setTail(start->getPrevious()->getPrevious()->getPrevious());
   }
+
+	cout << start->getVehicle()->getSize() << endl;
 }
 
 
@@ -129,10 +131,10 @@ void Lane::placeVehicle(VehicleBase* veh){
 void Lane::advance(LightColor color, int yellowTimeLeft){
 	for (int i = lane.size()-1; i > -1; i--){
 		//check there is a vehcile in the section
-		if (lane[i]->getVehicle() != nullptr){
+		if (lane[i]->getOccupied()){
 			//Check the vehicle at that section is the head of the vehicle
 			//Check the vehicle's AlreadyMoved boolean is false
-			if (lane[i]->getVehicle()->getHead() == lane[i] && lane[i]->getVehicle()->getAlreadyMoved() == false){
+			if (lane[i]->getVehicle()->getAlreadyMoved() == false){
 				move(lane[i], i, color, yellowTimeLeft);
 			}
 		}else{
@@ -391,13 +393,6 @@ bool Lane::openSpace(){
 Section* Lane::getStart(){return start;}
 
 
-// getEnd returns a pointer to the end of the inbounds sections
-//
-// Return - Section* end
-//
-Section* Lane::getEnd(){return end;}
-
-
 //getDir returns the direction of the lane
 //
 Direction Lane::getDir(){return dir;}
@@ -452,7 +447,9 @@ void Lane::link(){
 //
 void Lane::resetMoveBool(){
 	for (int i = 0; i < size; i++){
-		lane[i]->getVehicle()->setAlreadyMoved(false);
+		if (lane[i]->getOccupied()){
+			lane[i]->getVehicle()->setAlreadyMoved(false);
+		}
 	}
 }
 

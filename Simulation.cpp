@@ -70,7 +70,7 @@ void Simulation::run(int seed){
 
     //create loop to simulate clock
     while(t<=maxSimulatedTime){
-        
+
         //make vehicles for the lanes
         makeVehicle(&northBound,probNewVehNorth);
         makeVehicle(&southBound,probNewVehSouth);
@@ -86,6 +86,37 @@ void Simulation::run(int seed){
         anim.setVehiclesSouthbound(southBound.getVehicleVector());
         anim.setVehiclesEastbound(eastBound.getVehicleVector());
         anim.setVehiclesWestbound(westBound.getVehicleVector());
+
+        //draw animation
+        anim.draw(t);
+
+        //user increment
+        cin.get(in);
+
+        //parameters for advance()
+        LightColor NScolor = ns.getColor();
+        LightColor EWcolor = ew.getColor();
+        int NSyellow = ns.getYellowTimeLeft();
+        int EWyellow = ew.getYellowTimeLeft();
+
+        //advance vehicles in all lanes
+        northBound.advance(NScolor, NSyellow);
+        southBound.advance(NScolor, NSyellow);
+        eastBound.advance(EWcolor, EWyellow);
+        westBound.advance(EWcolor, EWyellow);
+
+        //reset alreadyMoved booleans for all vehicles
+        northBound.resetMoveBool();
+        southBound.resetMoveBool();
+        eastBound.resetMoveBool();
+        westBound.resetMoveBool();
+
+        //decrement TrafficLights
+        ns.decrement();
+        ew.decrement();        
+
+        //increment counter
+        t++;
     }
 
 }
@@ -98,39 +129,37 @@ void Simulation::makeVehicle(Lane* l, double probNewVeh){
 
     //Check if there is an open space available for the new vehicle in the lane
     if (l->openSpace()){
-
         //check if new vehicle will be made
         if (newVeh <= probNewVeh){
             //check if a car will be made
             if (type <= propCars){
-                VehicleBase veh = VehicleBase(VehicleType::car,l->getDir(),2,false);
-                l->placeVehicle(&veh);
+                VehicleBase* veh = new VehicleBase(VehicleType::car,l->getDir(),2,false);
+                l->placeVehicle(veh);
             }
             //check if a suv will be made
             else if (type > propCars && type <= (propCars + propSuvs)){
-                VehicleBase veh = VehicleBase(VehicleType::suv,l->getDir(),3,false);
-                l->placeVehicle(&veh);
+                VehicleBase* veh = new VehicleBase(VehicleType::suv,l->getDir(),3,false);
+                l->placeVehicle(veh);
             }
             //otherwise a truck will be made
             else{
-                VehicleBase veh = VehicleBase(VehicleType::truck,l->getDir(),4,false);
-                l->placeVehicle(&veh);
+                VehicleBase* veh = new VehicleBase(VehicleType::truck,l->getDir(),4,false);
+                l->placeVehicle(veh);
+            }
+
+            //set turn choice for car
+            if (l->getStart()->getVehicle()->getVehicleType() == VehicleType::car && turn <= propRightTurnCar){
+                l->getStart()->getVehicle()->setTurnChoice(true);
+            }
+            //set turn choice for suv
+            else if (l->getStart()->getVehicle()->getVehicleType() == VehicleType::suv && turn > propRightTurnCar && turn <= propRightTurnSuv + propRightTurnCar){
+                l->getStart()->getVehicle()->setTurnChoice(true);
+            }   
+            //set turn choice for truck
+            else if (l->getStart()->getVehicle()->getVehicleType() == VehicleType::truck && turn > propRightTurnCar + propRightTurnSuv){
+                l->getStart()->getVehicle()->setTurnChoice(true);
             }
         }
-
-        //set turn choice for car
-        if (l->getStart()->getVehicle()->getVehicleType() == VehicleType::car && turn <= propRightTurnCar){
-            l->getStart()->getVehicle()->setTurnChoice(true);
-        }
-        //set turn choice for suv
-        else if (l->getStart()->getVehicle()->getVehicleType() == VehicleType::suv && turn > propRightTurnCar && turn <= propRightTurnSuv + propRightTurnCar){
-            l->getStart()->getVehicle()->setTurnChoice(true);
-        }
-        //set turn choice for truck
-        else if (l->getStart()->getVehicle()->getVehicleType() == VehicleType::truck && turn > propRightTurnCar + propRightTurnSuv){
-            l->getStart()->getVehicle()->setTurnChoice(true);
-        }
-
     }
 }
 
@@ -139,7 +168,6 @@ void Simulation::makeVehicle(Lane* l, double probNewVeh){
 
 int main(int argc,char* argv[]){
     
-    //preprocessing stage
     ConfigParser config = ConfigParser(argv[1]);
     
     Simulation sim = Simulation(config);
@@ -147,52 +175,6 @@ int main(int argc,char* argv[]){
     int seed = stoi(argv[2]);
 
     sim.run(seed);
-
-
-    // Animator anim(8);
-
-    // Intersection botRight = Intersection();
-    // Intersection topRight = Intersection();
-    // Intersection botLeft = Intersection();
-    // Intersection topLeft = Intersection();
-
-    // Lane northBound = Lane(8, Direction::north, &botRight, &topRight);
-    // Lane southBound = Lane(8, Direction::south, &topLeft, &botLeft);
-    // Lane eastBound = Lane(8, Direction::east, &botLeft, &botRight);
-    // Lane westBound = Lane(8, Direction::west, &topRight, &topLeft);
-
-    // VehicleBase v1 = VehicleBase(VehicleType::car, Direction::east, 2, false);
-    // VehicleBase v2 = VehicleBase(VehicleType::truck, Direction::east, 4, false);
-    // VehicleBase v3 = VehicleBase(VehicleType::car, Direction::west, 2, false);
-    // VehicleBase v4 = VehicleBase(VehicleType::suv, Direction::west, 3, false);
-    // VehicleBase v5 = VehicleBase(VehicleType::car, Direction::north, 2, false);
-    // VehicleBase v6 = VehicleBase(VehicleType::truck, Direction::north, 4, false);
-    // VehicleBase v7 = VehicleBase(VehicleType::car, Direction::south, 2, false);
-    // VehicleBase v8 = VehicleBase(VehicleType::suv, Direction::south, 3, false);
-
-
-    // anim.setVehiclesNorthbound(northBound.getVehicleVector());
-    // anim.setVehiclesSouthbound(southBound.getVehicleVector());
-    // anim.setVehiclesEastbound(eastBound.getVehicleVector());
-    // anim.setVehiclesWestbound(westBound.getVehicleVector());
-
-    // anim.setLightNorthSouth(LightColor::red);
-    // anim.setLightEastWest(LightColor::green);
-
-    // anim.draw(1);
-
-    // northBound.placeVehicle(&v1);
-    // southBound.placeVehicle(&v2);
-    
-    // anim.setVehiclesNorthbound(northBound.getVehicleVector());
-    // anim.setVehiclesSouthbound(southBound.getVehicleVector());
-    // anim.setVehiclesEastbound(eastBound.getVehicleVector());
-    // anim.setVehiclesWestbound(westBound.getVehicleVector());
-
-    // anim.setLightNorthSouth(LightColor::red);
-    // anim.setLightEastWest(LightColor::green);
-
-    // anim.draw(2);
 
     return 0;
 }

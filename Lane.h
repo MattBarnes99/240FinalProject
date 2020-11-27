@@ -13,7 +13,6 @@ class Lane {
 
 	private:
 		Section* start;
-		Section* end;
 		Intersection* intOne;
 		Intersection* intTwo;
 		Direction dir; 
@@ -34,7 +33,7 @@ class Lane {
 		Lane();
 		~Lane();
 
-		Section* getEnd(); //returns the last inbounds section of the lane
+		
 		Section* getStart(); //returns the first inbounds section of the lane
 
 		vector<VehicleBase*> getVehicleVector(); //vector to be passed to the animator

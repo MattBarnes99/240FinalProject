@@ -38,6 +38,7 @@ class Simulation{
         double propRightTurnTruck;
         double propLeftTurnTruck;
         randomGen rand;
+        char in;
 
     public:
         
