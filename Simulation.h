@@ -4,7 +4,6 @@
 #include "Animator.h"
 #include "VehicleBase.h"
 #include "ConfigParser.h"
-#include "Clock.h"
 #include "TrafficLight.h"
 #include "Lane.h"
 #include "randomGen.h"
