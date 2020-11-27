@@ -4,7 +4,6 @@
 #include "Section.h"
 #include "Intersection.h"
 #include "VehicleBase.h"
-#include "Vehicle.h"
 #include "TrafficLight.h"
 #include <vector>
 
@@ -15,14 +14,24 @@ class Lane {
 	private:
 		Section* start;
 		Section* end;
-		vector<Section*> lane;
+		Intersection* intOne;
+		Intersection* intTwo;
+		Direction dir; 
 		int size; //total size of lane
 		int halfsize; //number of sections befor intersection
+		vector<Section*> lane;
+
 		void link(); // will create the next and previous links for the sections
+		void move(Section* sec, int index, LightColor color, int yellowTimeLeft);
+		void turn(Section* sec);
+		void moveAfterInt(Section* sec);
+		void moveBeforeInt(Section* sec);
+		void removeVehicle(Section* sec);
+		void moveForward(Section* sec);
 
 	public:
 
-		Lane(int sections, Intersection* interSectionOne, Intersection* interSectionTwo);
+		Lane(int sections, Direction dir, Intersection* interSectionOne, Intersection* interSectionTwo);
 		Lane(const Lane& other);
 		Lane();
 		~Lane();
@@ -32,9 +41,11 @@ class Lane {
 
 		vector<VehicleBase*> getVehicleVector(); //vector to be passed to the animator
 
-		void advance(); //control for advancement of the vehicles in the lane
+		void advance(LightColor color, int yellowTimeLeft); //control for advancement of the vehicles in the lane
 
 		bool openSpace(); //check if space is open for vehicle generation
+
+		void placeVehicle(VehicleBase* veh);
 
 };
 

@@ -10,14 +10,28 @@ class Intersection : public Section{
 	
 	private:
 		
-		Section *right;
+		Section* north;
+		Section* south;
+		Section* east;
+		Section* west;
 	
 	public:
 		
 		Intersection();
 		~Intersection();
 		
-		void setRight(Section *right);
+		//setters for section pointers
+		void setNorth(Section *sec);
+		void setSouth(Section *sec);
+		void setEast(Section *sec);
+		void setWest(Section *sec);
+
+		//getters for section pointers
+		Section* getNorth();
+		Section* getSouth();
+		Section* getEast();
+		Section* getWest();
+
 		
 };
 

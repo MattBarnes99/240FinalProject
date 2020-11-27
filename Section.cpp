@@ -6,7 +6,7 @@
 using namespace std;
 
 //Empty Consructor
-Section::Section(){};
+Section::Section(): name{"section"} {};
 
 
 //Destructor

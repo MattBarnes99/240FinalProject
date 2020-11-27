@@ -15,10 +15,14 @@ using namespace std;
 //		Intersection* one - first intersection section
 //		Intersection* two - second intersection section
 //
-Lane::Lane(int halfsize, Intersection* interSectionOne, Intersection* interSectionTwo): halfsize{halfsize} {
+Lane::Lane(int halfsize, Direction dir, Intersection* intOne, Intersection* intTwo){
 
-	//set the total size of the lane
-	size = (halfsize*2) + 8 + 2;
+	//Intialize instance variables
+	this->intOne = intOne;
+	this->intTwo = intTwo;
+	this->dir = dir;
+	this->halfsize = halfsize;
+	this->size = (halfsize*2) + 8 + 2;
 
 	//adds four offbounds section pointers to lane
 	for (int i = 0; i < 4; i++){
@@ -31,10 +35,10 @@ Lane::Lane(int halfsize, Intersection* interSectionOne, Intersection* interSecti
 	}
 
 	//adds first intersection
-	lane.push_back(interSectionOne);
+	lane.push_back(intOne);
 
 	//adds second intersection
-	lane.push_back(interSectionTwo);
+	lane.push_back(intTwo);
 
 	//adds sections after intersection
 	for (int i = 0; i < halfsize; i++){
@@ -66,7 +70,51 @@ Lane::Lane(){}
 
 
 //Destructor
-Lane::~Lane(){}
+Lane::~Lane(){
+	for (int i = 0; i < this->size; i++){
+		if (lane[i]->getName() == "section"){
+			delete this->lane[i];
+		}
+	}
+	lane.clear();
+}
+
+
+//placeVehicle method places the vehicle at the starting section of the lane
+//  will backfill the rest of the sections on the offbounds sections
+//
+//Parameter - VehicleBase* veh
+//
+void Lane::placeVehicle(VehicleBase* veh){
+
+  //set the head of the vehicle to the start section
+  veh->setHead(start);
+
+  //set that sections occupied boolean to true and assign the vehicle to the section
+  start->setOccupied(true);
+  start->setVehicle(veh);
+
+  //set the previous section to true and assign the vehicle to that section
+  start->getPrevious()->setOccupied(true);
+  start->getPrevious()->setVehicle(veh);
+
+  //If vehicle is car, set the tail to the second section
+  if (veh->getVehicleType() == VehicleType::car){
+    veh->setTail(start->getPrevious());
+  //If vehicle is suv, assign another section and set tail to third section
+  }else if(veh->getVehicleType() == VehicleType::suv){
+    start->getPrevious()->getPrevious()->setOccupied(true);
+    start->getPrevious()->getPrevious()->setVehicle(veh);
+    veh->setTail(start->getPrevious()->getPrevious());
+  //If vehicle is truck, assign two more sections and set tail to fourth section
+  }else{
+    start->getPrevious()->getPrevious()->setOccupied(true);
+    start->getPrevious()->getPrevious()->setVehicle(veh);
+    start->getPrevious()->getPrevious()->getPrevious()->setOccupied(true);
+    start->getPrevious()->getPrevious()->getPrevious()->setVehicle(veh);
+    veh->setTail(start->getPrevious()->getPrevious()->getPrevious());
+  }
+}
 
 
 // advance is the intitiating structure to move the vehicles in a given lane
@@ -108,8 +156,9 @@ void Lane::move(Section* sec, int index, LightColor color, int yellowTimeLeft){
 	}
 
 	//Check to see if the vehicle is in the second space of the intersection
-	else if (index == size/2){
-		
+	else if (index == size/2
+	){
+
 	}
 
 	//Check to see if vehicle is in the first space of the intersection
@@ -127,7 +176,7 @@ void Lane::move(Section* sec, int index, LightColor color, int yellowTimeLeft){
 	else if (index == (size/2-1)){
 		//moveForward if the turn choice is false and the vehicle has a green light
 		if (color == LightColor::green && sec->getVehicle()->getTurnChoice() == false){
-			moveForward(sec);
+			moveBeforeInt(sec);
 		//turn Right if the vehicle has a green light and the turnChoice is true
 		}else if (color == LightColor::green && sec->getVehicle()->getTurnChoice() == true){
 			turn(sec);
@@ -135,15 +184,15 @@ void Lane::move(Section* sec, int index, LightColor color, int yellowTimeLeft){
 		}else if (color == LightColor::yellow && sec->getVehicle()->getTurnChoice() == false){
 			//Check if car has enough time to make it through the intersection before red
 			if (sec->getVehicle()->getSize() == 2 && yellowTimeLeft >= 4){
-				moveForward(sec);
+				moveBeforeInt(sec);
 			}
 			//Check if suv has enough time to make it through the intersection before red
 			else if (sec->getVehicle()->getSize() == 3 && yellowTimeLeft >= 5){
-				moveForward(sec);
+				moveBeforeInt(sec);
 			}
 			//Check if truck has enough time to make it through the intersection before red
 			else if (sec->getVehicle()->getSize() == 4 && yellowTimeLeft >= 6){
-				moveForward(sec);
+				moveBeforeInt(sec);
 			}
 		}
 		//Condition of yellow light and turning right
@@ -165,6 +214,29 @@ void Lane::move(Section* sec, int index, LightColor color, int yellowTimeLeft){
 	//Else, vehicle is before intersection
 	else{
 		moveBeforeInt(sec);
+	}
+}
+
+
+
+// moveForward is used for forward movement of a vehicle
+// it is called because special movement calls are needed 
+// when using intersection sections
+//
+// Parameter - Intersection* intsec is the intersection that 
+// the vehicle is moving from (from intOne to intTwo)
+//
+void Lane::moveForward(Intersection* intsec){
+	if (intTwo->getOccupied() == false){
+		VehicleBase* veh = intOne->getVehicle();
+		//update head of vehicle to next section
+		veh->setHead(intTwo);
+		intTwo->setVehicle(veh);
+		intTwo->setOccupied(true);
+		//update tail to next section
+		veh->getTail()->setOccupied(false);
+		veh->getTail()->setVehicle(nullptr);
+		veh->setTail(veh->getTail()->getNext());
 	}
 }
 
@@ -271,7 +343,7 @@ void Lane::removeVehicle(Section* sec){
 //
 vector<VehicleBase*> Lane::getVehicleVector(){
 	vector<VehicleBase*> ret;
-	for (int i = 4; i<(lane.size()-4); i++){
+	for (unsigned int i = 4; i<(lane.size()-4); i++){
 		if (lane[i]->getOccupied()){
 			ret.push_back(lane[i]->getVehicle());
 		}else{
@@ -310,9 +382,43 @@ Section* Lane::getEnd(){return end;}
 // link creates the next and previous links for each section in a lane
 //
 void Lane::link(){
-	for (int i = 0; i < lane.size()-1; i++){
-		lane[i]->setNext(lane[i+1]);
-		lane[i+1]->setPrevious(lane[i]);
+	//for loop creates the links for next and previous for the tiles
+	//does not include the n,s,e,w pointers for the intersection
+	for (unsigned int i = 0; i < lane.size()-1; i++){
+		if (lane[i] == lane[size/2-1]){
+			lane[i]->setNext(lane[i+1]);
+		}else if (lane[i] == lane[size/2]){
+			continue;
+		}else if (lane[i] == lane[size/2+1]){
+			lane[i+1]->setPrevious(lane[i]);
+		}else{
+			lane[i]->setNext(lane[i+1]);
+			lane[i+1]->setPrevious(lane[i]);
+		}
+		
+	}
+
+	//Creation of n,s,e,w pointers for the intersections depending on direction
+	if (dir == Direction::north){
+		intOne->setSouth(lane[size/2-1]);
+		intOne->setNorth(intTwo);
+		intTwo->setSouth(intOne);
+		intTwo->setNorth(lane[size/2+2]);
+	}else if (dir == Direction::south){
+		intOne->setNorth(lane[size/2-1]);
+		intOne->setSouth(intTwo);
+		intTwo->setNorth(intOne);
+		intTwo->setSouth(lane[size/2+2]);
+	}else if (dir == Direction::east){
+		intOne->setEast(intTwo);
+		intOne->setWest(lane[size/2-1]);
+		intTwo->setEast(lane[size/2+2]);
+		intTwo->setWest(intOne);
+	}else if (dir == Direction::west){
+		intOne->setWest(intTwo);
+		intOne->setEast(lane[size/2-1]);
+		intTwo->setWest(lane[size/2+2]);
+		intTwo->setEast(intOne);
 	}
 }
 

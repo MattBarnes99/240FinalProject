@@ -2,14 +2,13 @@
 #define __SECTION_H__
 
 #include <string>
-#include <vector>
-#include "VehicleBase.h"
+#include "VehicleBase.fwd.h"
 
 using namespace std;
 
 class Section {
 	
-	private:
+	protected:
 
 		Section* next;
 		Section* previous;
