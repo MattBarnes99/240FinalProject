@@ -6,11 +6,11 @@
 using namespace std;
 
 
-//Constructor takes creates the lane based on the halfsize, and two intersection sections
+// Constructor takes creates the lane based on the halfsize, and two intersection sections
 // four offbounds sections will be created for vehicle intialization and for when the vehicle exits
 // the road
 //
-//Parameters:
+// Parameters:
 //		int halfsize - number of sections before intersection
 //		Intersection* one - first intersection section
 //		Intersection* two - second intersection section
@@ -69,9 +69,14 @@ Lane::Lane(){}
 Lane::~Lane(){}
 
 
-//advance is the intitiating structure to move the vehicles in a given lane
+// advance is the intitiating structure to move the vehicles in a given lane
 // creates an iterator starting at the end of the lane and iterates down
 // calling appropriate move methods as needed
+//
+// Parameter - LightColor color is the color of the light for this lane at 
+// this moment
+// Parameter - int yellowTimeLeft is how much time is left for the yellow 
+// light for this lane
 //
 void Lane::advance(LightColor color, int yellowTimeLeft){
 	for (int i = lane.size()-1; i > -1; i--){
@@ -85,16 +90,28 @@ void Lane::advance(LightColor color, int yellowTimeLeft){
 	}
 }
 
-
+// move contains all of the logic to decide how a vehicle should move 
+// after being called by the advance method
+//
+// Parameter - Section* sec is the lane section to move the vehicle from
+// Parameter - int index is the index of the given section in the lane
+// Parameter - LightColor color is the color of the light for this lane at 
+// this moment
+// Parameter - int yellowTimeLeft is how much time is left for the yellow 
+// light for this lane
+//
 void Lane::move(Section* sec, int index, LightColor color, int yellowTimeLeft){
+
 	//Check to see if vehicle is after the intersection
 	if (index >= (size/2+2)){
 		moveAfterInt(sec);
 	}
+
 	//Check to see if the vehicle is in the second space of the intersection
 	else if (index == size/2){
 		
 	}
+
 	//Check to see if vehicle is in the first space of the intersection
 	else if (index == size/2){
 		//call turn method if the turnChoice of the vehicle is true
@@ -105,6 +122,7 @@ void Lane::move(Section* sec, int index, LightColor color, int yellowTimeLeft){
 			moveForward(sec);
 		}
 	}
+
 	//Check to see if vehicle is immediately before the intersection
 	else if (index == (size/2-1)){
 		//moveForward if the turn choice is false and the vehicle has a green light
@@ -143,6 +161,7 @@ void Lane::move(Section* sec, int index, LightColor color, int yellowTimeLeft){
 			}
 		}
 	}
+	
 	//Else, vehicle is before intersection
 	else{
 		moveBeforeInt(sec);
@@ -150,9 +169,9 @@ void Lane::move(Section* sec, int index, LightColor color, int yellowTimeLeft){
 }
 
 
-//turn controls the turn movements of a given vehicle
+// turn controls the turn movements of a given vehicle
 //
-//Parameter - Section* second
+// Parameter - Section* sec is the section that the vehicle is turning from
 //
 void Lane::turn(Section* sec){
 	//if(head is at the int)
@@ -163,10 +182,10 @@ void Lane::turn(Section* sec){
 
 
 
-//moveAfterInt will move vehicles forward if they are in the second place of
-// the intersection or after
+// moveAfterInt will move vehicles forward if they are in the second place of
+// the intersection or after, and will remove vehicles if they are offbounds
 //
-//Parameter - Section* sec
+// Parameter - Section* sec is the section that the vehicle is moving from
 //
 void Lane::moveAfterInt(Section* sec){
 
@@ -180,13 +199,14 @@ void Lane::moveAfterInt(Section* sec){
 	veh->getTail()->setVehicle(nullptr);
 	veh->setTail(veh->getTail()->getNext());
 
-	removeVehicle(sec->getNext()); //check to see if vehicle is offbounds and should be deleted
+	//check to see if vehicle is offbounds and should be deleted
+	removeVehicle(sec->getNext()); 
 }
 
 
-//moveBeforeInt will move vehicles forward that are before the intersectin
+// moveBeforeInt will move vehicles forward that are before the intersection
 //
-//parameter - Section* sec
+// Parameter - Section* sec is the section that the vehicle is moving from
 //
 void Lane::moveBeforeInt(Section* sec){
 	if (sec->getNext()->getOccupied() == false){
@@ -202,14 +222,19 @@ void Lane::moveBeforeInt(Section* sec){
 	}
 }
 
+// moveForward will move vehicles forward that are immediately before or 
+// in the intersection
+//
+// Parameter - Section* sec is the section that the vehicle is moving from
+//
 void Lane::moveForward(Section* sec) {
 	moveBeforeInt(sec);
 }
 
-//removeVehicle will delete a vehicle once it has completely left the inbounds
+// removeVehicle will delete a vehicle once it has completely left the inbounds
 // section of the lane
 //
-//Parameter - Section* sec
+// Parameter - Section* sec is the section that the vehicle will be removed from
 //
 void Lane::removeVehicle(Section* sec){
 	if (sec->getVehicle()->getTail() == lane[halfsize*2+7]){
@@ -239,10 +264,10 @@ void Lane::removeVehicle(Section* sec){
 }
 
 
-//getVehicleVector returns a vector of vehicleBase* to be sent to the animator
+// getVehicleVector returns a vector of vehicleBase* to be sent to the animator
 // does not include the offbound sections
 //
-//return - vector<VehicleBase*>
+// Return - vector<VehicleBase*> 
 //
 vector<VehicleBase*> Lane::getVehicleVector(){
 	vector<VehicleBase*> ret;
@@ -257,9 +282,10 @@ vector<VehicleBase*> Lane::getVehicleVector(){
 }
 
 
-//openSpace returns true if the starting section is not occupied
+// openSpace returns true if the starting section is not occupied
 //
-//return - bool isOpen
+// Return - bool isOpen
+//
 bool Lane::openSpace(){
 	bool ret = true;
 	if (start->getOccupied() == true){ret = false;}
@@ -267,19 +293,21 @@ bool Lane::openSpace(){
 }
 
 
-//getStart returns a pointer to the start of the inbounds sections
+// getStart returns a pointer to the start of the inbounds sections
 //
-//return - Section* start
+// Return - Section* start
+//
 Section* Lane::getStart(){return start;}
 
 
-//getEnd returns a pointer to the end of the inbounds sections
+// getEnd returns a pointer to the end of the inbounds sections
 //
-//return - Section* end
+// Return - Section* end
+//
 Section* Lane::getEnd(){return end;}
 
 
-//link creates the next and previous links for each section in a lane
+// link creates the next and previous links for each section in a lane
 //
 void Lane::link(){
 	for (int i = 0; i < lane.size()-1; i++){
