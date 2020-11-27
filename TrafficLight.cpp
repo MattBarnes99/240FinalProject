@@ -2,6 +2,7 @@
 #define __TRAFFICLIGHT_CPP__
 
 #include "TrafficLight.h"
+#include <iostream>
 
 using namespace std;
 
@@ -10,21 +11,27 @@ using namespace std;
 // and assigns them to their relevant instance variables
 //
 TrafficLight::TrafficLight(LightColor light_color, int green, int yellow, int red)
-	: color{light_color},
-	  greenLength{green},
-	  greenTimeLeft{green},
-	  yellowLength{yellow},
-	  yellowTimeLeft{yellow},
-	  redLength{red},
-	  redTimeLeft{red}
-	{}
+	:color{light_color},
+	greenLength{green},
+	greenTimeLeft{green},
+	yellowLength{yellow},
+	yellowTimeLeft{yellow},
+	redLength{red},
+	redTimeLeft{red}
+{
+	
+}
 
 
 //Copy constructor
 TrafficLight::TrafficLight(const TrafficLight& other)
 	: color{other.color},
 	  greenLength{other.greenLength},
-	  yellowLength{other.yellowLength}
+	  greenTimeLeft{other.greenTimeLeft},
+	  yellowLength{other.yellowLength},
+	  yellowTimeLeft{other.yellowTimeLeft},
+	  redLength{other.redLength},
+	  redTimeLeft{other.redTimeLeft}
 	{}
 
 
@@ -60,6 +67,17 @@ void TrafficLight::decrement(){
 		}
 	}
 
+}
+
+
+void TrafficLight::print(){
+	if (color == LightColor::green){
+		cout << "green: " << greenTimeLeft << endl;
+	}else if (color == LightColor::yellow){
+		cout << "yellow: " << yellowTimeLeft << endl;
+	}else if (color == LightColor::red){
+		cout << "red: " << redTimeLeft << endl;
+	}
 }
 
 #endif

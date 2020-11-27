@@ -34,6 +34,9 @@ class TrafficLight {
 
 		//will decrement the time left variable for the current LightColor state
 		void decrement();
+
+		//debug print method
+		void print();
 };
 
 #endif

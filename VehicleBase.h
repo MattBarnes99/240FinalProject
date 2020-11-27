@@ -19,7 +19,7 @@ class VehicleBase
       int         vehicleID;
       VehicleType vehicleType;
       Direction   vehicleDirection;
-      bool alreadyMoved;
+      bool alreadyMoved = false;
       Section *head;
       Section *tail;
       int size;

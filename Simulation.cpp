@@ -93,17 +93,11 @@ void Simulation::run(int seed){
         //user increment
         cin.get(in);
 
-        //parameters for advance()
-        LightColor NScolor = ns.getColor();
-        LightColor EWcolor = ew.getColor();
-        int NSyellow = ns.getYellowTimeLeft();
-        int EWyellow = ew.getYellowTimeLeft();
-
         //advance vehicles in all lanes
-        northBound.advance(NScolor, NSyellow);
-        southBound.advance(NScolor, NSyellow);
-        eastBound.advance(EWcolor, EWyellow);
-        westBound.advance(EWcolor, EWyellow);
+        northBound.advance(ns.getColor(), ns.getYellowTimeLeft());
+        southBound.advance(ns.getColor(), ns.getYellowTimeLeft());
+        eastBound.advance(ew.getColor(), ew.getYellowTimeLeft());
+        westBound.advance(ew.getColor(), ew.getYellowTimeLeft());
 
         //reset alreadyMoved booleans for all vehicles
         northBound.resetMoveBool();
