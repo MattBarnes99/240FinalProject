@@ -5,6 +5,8 @@
 
 int VehicleBase::vehicleCount = 0;
 
+
+//Common use constructor
 VehicleBase::VehicleBase(VehicleType type, Direction originalDirection, int size, bool rightTurn)
     : vehicleID(VehicleBase::vehicleCount++), 
       vehicleType(type),
@@ -13,12 +15,16 @@ VehicleBase::VehicleBase(VehicleType type, Direction originalDirection, int size
       turnChoice{rightTurn}
 {}
 
+
+//Copy Constructor
 VehicleBase::VehicleBase(const VehicleBase& other)
     : vehicleID(other.vehicleID),
       vehicleType(other.vehicleType),
       vehicleDirection(other.vehicleDirection)
 {}
 
+
+//Destructor
 VehicleBase::~VehicleBase() {}
 
 
@@ -35,10 +41,12 @@ void VehicleBase::setDir(Direction newDir){curDir = newDir;}
 
 
 //getSize returns the size of the vehicle
+//
 int VehicleBase::getSize(){return size;}
 
 
 //getTurnChoice returns the bool turnChoice of the vehicle
+//
 bool VehicleBase::getTurnChoice(){return turnChoice;}
 
 
@@ -80,5 +88,6 @@ Section* VehicleBase::getHead(){return this->head;}
 //
 //Return - Section *tail
 Section* VehicleBase::getTail(){return this->tail;}
+
 
 #endif
