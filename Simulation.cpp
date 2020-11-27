@@ -70,12 +70,22 @@ void Simulation::run(int seed){
 
     //create loop to simulate clock
     while(t<=maxSimulatedTime){
+        
+        //make vehicles for the lanes
         makeVehicle(&northBound,probNewVehNorth);
         makeVehicle(&southBound,probNewVehSouth);
         makeVehicle(&eastBound,probNewVehEast);
         makeVehicle(&westBound,probNewVehWest);
 
+        //set the traffic lights
+        anim.setLightNorthSouth(ns.getColor());
+        anim.setLightEastWest(ew.getColor());
 
+        //set the animator with the vector<vehicle*> lanes
+        anim.setVehiclesNorthbound(northBound.getVehicleVector());
+        anim.setVehiclesSouthbound(southBound.getVehicleVector());
+        anim.setVehiclesEastbound(eastBound.getVehicleVector());
+        anim.setVehiclesWestbound(westBound.getVehicleVector());
     }
 
 }
@@ -139,18 +149,6 @@ int main(int argc,char* argv[]){
     sim.run(seed);
 
 
-
-
-
-
-
-
-
-
-
-
-    
-    
     // Animator anim(8);
 
     // Intersection botRight = Intersection();
