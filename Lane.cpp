@@ -132,13 +132,13 @@ void Lane::placeVehicle(VehicleBase* veh){
 // Parameter - int yellowTimeLeft is how much time is left for the yellow 
 // light for this lane
 //
-void Lane::advance(LightColor color, int yellowTimeLeft, Lane* turn){
+void Lane::advance(LightColor color, int yellowTimeLeft, Lane* turn, Lane* turnFrom){
 	for (int i = lane.size()-1; i > -1; i--){
 		//check there is a vehcile in the section
 		if (lane[i]->getOccupied()){
 			//Check the vehicle's AlreadyMoved boolean is false
 			if (lane[i]->getVehicle()->getAlreadyMoved() == false){
-				move(lane[i], i, color, yellowTimeLeft, turn);
+				move(lane[i], i, color, yellowTimeLeft, turn, turnFrom);
 			}
 		}else{
 			continue;
@@ -157,7 +157,7 @@ void Lane::advance(LightColor color, int yellowTimeLeft, Lane* turn){
 //		LightColor color - current TrafficLight LightColor
 // 		int yellowTimeLeft - time left on yellow if LightColor == yellow
 //
-void Lane::move(Section* sec, int index, LightColor color, int yellowTimeLeft, Lane* turnLane){
+void Lane::move(Section* sec, int index, LightColor color, int yellowTimeLeft, Lane* turnLane, Lane* turnFrom){
 	
 	//Check for in or after intersection and going straight	
 	if (index >= (size/2-1) && sec->getVehicle()->getTurnChoice() == false){
@@ -169,7 +169,7 @@ void Lane::move(Section* sec, int index, LightColor color, int yellowTimeLeft, L
 	//Check for in or after intersection and turning right	
 	else if (index >= (size/2-1) && sec->getVehicle()->getTurnChoice() == true){
 		if (this->dir == sec->getVehicle()->getVehicleOriginalDirection()){
-			turn(sec,index,turnLane);
+			turn(sec,index,turnLane,turnFrom);
 		}
 	}
 
@@ -184,7 +184,7 @@ void Lane::move(Section* sec, int index, LightColor color, int yellowTimeLeft, L
 			moveForward(sec,index);
 		//turn Right if the vehicle has a green light and the turnChoice is true
 		}else if (color == LightColor::green && sec->getVehicle()->getTurnChoice() == true){
-			turn(sec,index,turnLane);
+			turn(sec,index,turnLane,turnFrom);
 		//Condition of yellow light and going straight
 		}else if (color == LightColor::yellow && sec->getVehicle()->getTurnChoice() == false){
 			//Check if car has enough time to make it through the intersection before red
@@ -203,15 +203,15 @@ void Lane::move(Section* sec, int index, LightColor color, int yellowTimeLeft, L
 		//Condition of yellow light and turning right
 		else if (color == LightColor::yellow && sec->getVehicle()->getTurnChoice() == true){
 			if (sec->getVehicle()->getSize() == 2 && yellowTimeLeft >= 3){
-				turn(sec,index,turnLane);
+				turn(sec,index,turnLane,turnFrom);
 			}
 			//Check if suv has enough time to make it through the intersection before red
 			else if (sec->getVehicle()->getSize() == 3 && yellowTimeLeft >= 4){
-				turn(sec,index,turnLane);
+				turn(sec,index,turnLane,turnFrom);
 			}
 			//Check if truck has enough time to make it through the intersection before red
 			else if (sec->getVehicle()->getSize() == 4 && yellowTimeLeft >= 5){
-				turn(sec,index,turnLane);
+				turn(sec,index,turnLane,turnFrom);
 			}
 		}
 	}
@@ -252,16 +252,12 @@ void Lane::moveForward(Section* sec,int index){
 //
 // Parameter - Section* sec is the section that the vehicle is turning from
 //
-void Lane::turn(Section* sec, int index, Lane* turnLane){
+void Lane::turn(Section* sec, int index, Lane* turnLane, Lane* turnFrom){
 	//Set alreadyMoved bool to true for vehicle
 	sec->getVehicle()->setAlreadyMoved(true);
 
 	int state = sec->getVehicle()->getTurningState(); //get the turning state of the vehicle
 	VehicleType type = sec->getVehicle()->getVehicleType(); //get type of vehicle
-
-	if (lane[index]->getVehicle()->getVehicleID() == 0){
-		cout << lane[index]->getVehicle()->getTurningState() << endl;
-	}
 	
 	if (state == 0){
 		sec->getVehicle()->setTurningState(1);
@@ -321,15 +317,15 @@ void Lane::turn(Section* sec, int index, Lane* turnLane){
 			lane[index+1]->setVehicle(sec->getVehicle());
 			lane[index+1]->setOccupied(true);
 			//update the tail
-			sec->getVehicle()->getTail()->setOccupied(false);
-			sec->getVehicle()->getTail()->setVehicle(nullptr);
-			sec->getVehicle()->setTail(sec->getVehicle()->getTail()->getNext());
+			turnFrom->lane[size/2-2]->setOccupied(false);
+			turnFrom->lane[size/2-2]->setVehicle(nullptr);
+			sec->getVehicle()->setTail(lane[index-2]);
 		}
 	}
 	else if (state == 4){
 		if (type == VehicleType::truck){
-			moveForward(sec,index);
 			sec->getVehicle()->setTurnChoice(false);
+			moveForward(sec,index);
 		}
 	}
 }
@@ -341,7 +337,6 @@ void Lane::turn(Section* sec, int index, Lane* turnLane){
 void Lane::removeVehicle(){
 	if (lane[size-1]->getOccupied()){
 		int i = lane[size-1]->getVehicle()->getSize();
-		delete this->lane[size-1]->getVehicle();
 		for (i; i>0; i--){
 			lane[size-i]->setOccupied(false);
 			lane[size-i]->setVehicle(nullptr);

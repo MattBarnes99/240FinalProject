@@ -37,7 +37,7 @@ Simulation::~Simulation(){
     for (unsigned int i = 0; i < this->allVehicles.size(); i++){
         delete this->allVehicles[i];
     }
-    allVehicles.clear();
+    this->allVehicles.clear();
 }
 
 void Simulation::run(int seed){
@@ -77,10 +77,10 @@ void Simulation::run(int seed){
     while(t<=maxSimulatedTime){
 
         //make vehicles for the lanes
-        makeVehicle(&northBound,probNewVehNorth);
-        makeVehicle(&southBound,probNewVehSouth);
-        makeVehicle(&eastBound,probNewVehEast);
-        makeVehicle(&westBound,probNewVehWest);
+        makeVehicle(&northBound,probNewVehNorth, &allVehicles);
+        makeVehicle(&southBound,probNewVehSouth, &allVehicles);
+        makeVehicle(&eastBound,probNewVehEast, &allVehicles);
+        makeVehicle(&westBound,probNewVehWest, &allVehicles);
 
         //set the traffic lights
         anim.setLightNorthSouth(ns.getColor());
@@ -99,10 +99,10 @@ void Simulation::run(int seed){
         cin.get(in);
 
         //advance vehicles in all lanes
-        northBound.advance(ns.getColor(), ns.getYellowTimeLeft(), &eastBound);
-        southBound.advance(ns.getColor(), ns.getYellowTimeLeft(), &westBound);
-        eastBound.advance(ew.getColor(), ew.getYellowTimeLeft(), &southBound);
-        westBound.advance(ew.getColor(), ew.getYellowTimeLeft(), &northBound);
+        northBound.advance(ns.getColor(), ns.getYellowTimeLeft(), &eastBound, &westBound);
+        southBound.advance(ns.getColor(), ns.getYellowTimeLeft(), &westBound, &eastBound);
+        eastBound.advance(ew.getColor(), ew.getYellowTimeLeft(), &southBound, &northBound);
+        westBound.advance(ew.getColor(), ew.getYellowTimeLeft(), &northBound, &southBound);
 
         //reset alreadyMoved booleans for all vehicles
         northBound.resetMoveBool();
@@ -116,14 +116,12 @@ void Simulation::run(int seed){
 
         //increment counter
         t++;
-
-        cout << "size of vec: " << allVehicles.size() << endl;
     }
 
 }
 
 
-void Simulation::makeVehicle(Lane* l, double probNewVeh){
+void Simulation::makeVehicle(Lane* l, double probNewVeh, vector<VehicleBase*>* vehicleContainer){
     double newVeh = rand.get();
     double type = rand.get();
     double turn = rand.get();
@@ -136,19 +134,19 @@ void Simulation::makeVehicle(Lane* l, double probNewVeh){
             if (type <= propCars){
                 VehicleBase* veh = new VehicleBase(VehicleType::car,l->getDir(),2,false);
                 l->placeVehicle(veh);
-                allVehicles.push_back(veh); //add vehicle to allVehicles
+                vehicleContainer->push_back(veh);
             }
             //check if a suv will be made
             else if (type > propCars && type <= (propCars + propSuvs)){
                 VehicleBase* veh = new VehicleBase(VehicleType::suv,l->getDir(),3,false);
                 l->placeVehicle(veh);
-                allVehicles.push_back(veh); //add vehicle to allVehicles
+                vehicleContainer->push_back(veh);
             }
             //otherwise a truck will be made
             else{
                 VehicleBase* veh = new VehicleBase(VehicleType::truck,l->getDir(),4,false);
                 l->placeVehicle(veh);
-                allVehicles.push_back(veh); //add vehicle to allVehicles
+                vehicleContainer->push_back(veh);
             }
              
 

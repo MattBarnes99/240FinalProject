@@ -47,7 +47,7 @@ class Simulation{
         Simulation();
         ~Simulation(); 
         void run(int seed);
-        void makeVehicle(Lane*,double);
+        void makeVehicle(Lane*,double, vector<VehicleBase*>*);
 };
 
 #endif
