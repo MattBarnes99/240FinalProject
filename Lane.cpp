@@ -72,6 +72,13 @@ Lane::Lane(){}
 //Destructor
 Lane::~Lane(){
 	for (int i = 0; i < this->size; i++){
+		
+		//delete dynamically allocated vehicles
+		if (lane[i]->getOccupied()){
+			delete this->lane[i]->getVehicle();
+		}
+
+		//delete dynamically allocated sections
 		if (lane[i]->getName() == "section"){
 			delete this->lane[i];
 		}
@@ -150,27 +157,26 @@ void Lane::advance(LightColor color, int yellowTimeLeft){
 // 		int yellowTimeLeft - time left on yellow if LightColor == yellow
 //
 void Lane::move(Section* sec, int index, LightColor color, int yellowTimeLeft){
-
-	if (color == LightColor::red && sec->getNext()->getName() == "intersection"){
-		return;
-		//do nothing on red
-	}
 	
 	//Check for in or after intersection and going straight	
-	else if (index >= size/2 && lane[index+1]->getOccupied() == false && sec->getVehicle()->getTurnChoice() == false){
+	if (index >= (size/2-1) && sec->getVehicle()->getTurnChoice() == false){
 		moveForward(sec,index);
 		removeVehicle(lane[index+1]);
 	}
 
 	//Check for in or after intersection and turning right	
-	else if (index >= size/2 && sec->getVehicle()->getTurnChoice() == true){
+	else if (index >= (size/2-1) && sec->getVehicle()->getTurnChoice() == true){
 		turn(sec,index);
 	}
 
 	//Vehicle is about to enter intersection
-	else if (index == (size/2-1) && sec->getNext()->getOccupied() == false){
+	else if (index == (size/2-2) && sec->getNext()->getOccupied() == false){
+		//check or red light
+		if (color == LightColor::red){
+			//do nothing on red
+		}
 		//moveForward if the turn choice is false and the vehicle has a green light
-		if (color == LightColor::green && sec->getVehicle()->getTurnChoice() == false){
+		else if (color == LightColor::green && sec->getVehicle()->getTurnChoice() == false){
 			moveForward(sec,index);
 		//turn Right if the vehicle has a green light and the turnChoice is true
 		}else if (color == LightColor::green && sec->getVehicle()->getTurnChoice() == true){
@@ -207,7 +213,7 @@ void Lane::move(Section* sec, int index, LightColor color, int yellowTimeLeft){
 	}
 
 	//Before the intersection
-	else if (index < size/2-1 && lane[index+1]->getOccupied() == false){
+	else if (index <= size/2-3 && lane[index+1]->getOccupied() == false){
 		moveForward(sec,index);
 	}
 }
@@ -249,11 +255,12 @@ void Lane::turn(Section* sec, int index){
 	int state = sec->getVehicle()->getTurningState(); //get the turning state of the vehicle
 	VehicleType type = sec->getVehicle()->getVehicleType(); //get type of vehicle
 
-
 	if (state == 0){
+		sec->getVehicle()->setTurningState(1);
 		moveForward(sec, index);
 	}
 	else if (state == 1){
+		sec->getVehicle()->setTurningState(2);
 		if (dir == Direction::north){
 			//update head of vehicle to eastern section
 			sec->getVehicle()->setHead(intOne->getEast());
@@ -263,34 +270,35 @@ void Lane::turn(Section* sec, int index){
 		else if (dir == Direction::south){
 			//update head of vehicle to western section
 			sec->getVehicle()->setHead(intOne->getWest());
-			intOne->getEast()->setVehicle(sec->getVehicle());
-			intOne->getEast()->setOccupied(true);
+			intOne->getWest()->setVehicle(sec->getVehicle());
+			intOne->getWest()->setOccupied(true);
 		}
 		else if (dir == Direction::east){
 			//update head of vehicle to southern section
 			sec->getVehicle()->setHead(intOne->getSouth());
-			intOne->getEast()->setVehicle(sec->getVehicle());
-			intOne->getEast()->setOccupied(true);
+			intOne->getSouth()->setVehicle(sec->getVehicle());
+			intOne->getSouth()->setOccupied(true);
 		}
 		else if (dir == Direction::west){
 			//update head of vehicle to northern section
 			sec->getVehicle()->setHead(intOne->getNorth());
-			intOne->getEast()->setVehicle(sec->getVehicle());
-			intOne->getEast()->setOccupied(true);
+			intOne->getNorth()->setVehicle(sec->getVehicle());
+			intOne->getNorth()->setOccupied(true);
 		}
 
 		//update the tail
 		sec->getVehicle()->getTail()->setOccupied(false);
 		sec->getVehicle()->getTail()->setVehicle(nullptr);
 		if (sec->getVehicle()->getVehicleType() == VehicleType::car){
-			sec->getVehicle()->setTail(sec);
+			sec->getVehicle()->setTail(intOne);
 		}else if (sec->getVehicle()->getVehicleType() == VehicleType::suv){
 			sec->getVehicle()->setTail(lane[index-1]);
 		}else if (sec->getVehicle()->getVehicleType() == VehicleType::truck){
 			sec->getVehicle()->setTail(lane[index-2]);
-	}
+		}
 	}
 	else if (state == 2){
+		sec->getVehicle()->setTurningState(3);
 		if (type == VehicleType::car){
 			sec->getVehicle()->setDir(dir);
 			moveForward(sec,index);
@@ -308,6 +316,7 @@ void Lane::turn(Section* sec, int index){
 		}
 	}
 	else if (state == 3){
+		sec->getVehicle()->setTurningState(4);
 		if (type == VehicleType::suv){
 			sec->getVehicle()->setDir(dir);
 			moveForward(sec,index);
@@ -331,10 +340,6 @@ void Lane::turn(Section* sec, int index){
 			sec->getVehicle()->setTurnChoice(false);
 		}
 	}
-
-	//Increment the state by 1
-	sec->getVehicle()->setTurningState(state+1);
-
 }
 
 
@@ -418,9 +423,9 @@ void Lane::link(){
 	//for loop creates the links for next and previous for the tiles
 	//does not include the n,s,e,w pointers for the intersection
 	for (unsigned int i = 0; i < lane.size()-1; i++){
-		if (lane[i] == lane[size/2-1]){
+		if (lane[i] == lane[size/2-2]){
 			lane[i]->setNext(lane[i+1]);
-		}else if (lane[i] == lane[size/2]){
+		}else if (lane[i] == lane[size/2-1]){
 			continue;
 		}else if (lane[i] == lane[size/2+1]){
 			lane[i+1]->setPrevious(lane[i]);
@@ -433,24 +438,24 @@ void Lane::link(){
 
 	//Creation of n,s,e,w pointers for the intersections depending on direction
 	if (dir == Direction::north){
-		intOne->setSouth(lane[size/2-1]);
+		intOne->setSouth(lane[size/2-2]);
 		intOne->setNorth(intTwo);
 		intTwo->setSouth(intOne);
-		intTwo->setNorth(lane[size/2+2]);
+		intTwo->setNorth(lane[size/2+1]);
 	}else if (dir == Direction::south){
-		intOne->setNorth(lane[size/2-1]);
+		intOne->setNorth(lane[size/2-2]);
 		intOne->setSouth(intTwo);
 		intTwo->setNorth(intOne);
-		intTwo->setSouth(lane[size/2+2]);
+		intTwo->setSouth(lane[size/2+1]);
 	}else if (dir == Direction::east){
 		intOne->setEast(intTwo);
-		intOne->setWest(lane[size/2-1]);
-		intTwo->setEast(lane[size/2+2]);
+		intOne->setWest(lane[size/2-2]);
+		intTwo->setEast(lane[size/2+1]);
 		intTwo->setWest(intOne);
 	}else if (dir == Direction::west){
 		intOne->setWest(intTwo);
-		intOne->setEast(lane[size/2-1]);
-		intTwo->setWest(lane[size/2+2]);
+		intOne->setEast(lane[size/2-2]);
+		intTwo->setWest(lane[size/2+1]);
 		intTwo->setEast(intOne);
 	}
 }
