@@ -336,10 +336,9 @@ void Lane::turn(Section* sec, int index, Lane* turnLane, Lane* turnFrom){
 //
 void Lane::removeVehicle(){
 	if (lane[size-1]->getOccupied()){
-		int i = lane[size-1]->getVehicle()->getSize();
-		for (i; i>0; i--){
-			lane[size-i]->setOccupied(false);
-			lane[size-i]->setVehicle(nullptr);
+		for (int vehSize = lane[size-1]->getVehicle()->getSize(); vehSize > 0; vehSize--){
+			lane[size-vehSize]->setOccupied(false);
+			lane[size-vehSize]->setVehicle(nullptr);
 		}
 	}
 }
