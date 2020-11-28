@@ -39,6 +39,7 @@ class Simulation{
         double propLeftTurnTruck;
         randomGen rand;
         char in;
+        vector<VehicleBase*> allVehicles; //used to free memory in destructor
 
     public:
         

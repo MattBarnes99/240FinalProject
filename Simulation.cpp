@@ -33,7 +33,12 @@ Simulation::Simulation(ConfigParser config){
     this->rand = rand;
 }
 
-Simulation::~Simulation(){}
+Simulation::~Simulation(){
+    for (unsigned int i = 0; i < this->allVehicles.size(); i++){
+        delete this->allVehicles[i];
+    }
+    allVehicles.clear();
+}
 
 void Simulation::run(int seed){
 
@@ -94,10 +99,10 @@ void Simulation::run(int seed){
         cin.get(in);
 
         //advance vehicles in all lanes
-        northBound.advance(ns.getColor(), ns.getYellowTimeLeft());
-        southBound.advance(ns.getColor(), ns.getYellowTimeLeft());
-        eastBound.advance(ew.getColor(), ew.getYellowTimeLeft());
-        westBound.advance(ew.getColor(), ew.getYellowTimeLeft());
+        northBound.advance(ns.getColor(), ns.getYellowTimeLeft(), &eastBound);
+        southBound.advance(ns.getColor(), ns.getYellowTimeLeft(), &westBound);
+        eastBound.advance(ew.getColor(), ew.getYellowTimeLeft(), &southBound);
+        westBound.advance(ew.getColor(), ew.getYellowTimeLeft(), &northBound);
 
         //reset alreadyMoved booleans for all vehicles
         northBound.resetMoveBool();
@@ -111,6 +116,8 @@ void Simulation::run(int seed){
 
         //increment counter
         t++;
+
+        cout << "size of vec: " << allVehicles.size() << endl;
     }
 
 }
@@ -129,17 +136,21 @@ void Simulation::makeVehicle(Lane* l, double probNewVeh){
             if (type <= propCars){
                 VehicleBase* veh = new VehicleBase(VehicleType::car,l->getDir(),2,false);
                 l->placeVehicle(veh);
+                allVehicles.push_back(veh); //add vehicle to allVehicles
             }
             //check if a suv will be made
             else if (type > propCars && type <= (propCars + propSuvs)){
                 VehicleBase* veh = new VehicleBase(VehicleType::suv,l->getDir(),3,false);
                 l->placeVehicle(veh);
+                allVehicles.push_back(veh); //add vehicle to allVehicles
             }
             //otherwise a truck will be made
             else{
                 VehicleBase* veh = new VehicleBase(VehicleType::truck,l->getDir(),4,false);
                 l->placeVehicle(veh);
+                allVehicles.push_back(veh); //add vehicle to allVehicles
             }
+             
 
             //set turn choice for car
             if (l->getStart()->getVehicle()->getVehicleType() == VehicleType::car && turn <= propRightTurnCar){

@@ -21,10 +21,10 @@ class Lane {
 		vector<Section*> lane;
 
 		void link(); // will create the next and previous links for the sections
-		void move(Section* sec, int index, LightColor color, int yellowTimeLeft);
-		void turn(Section* sec,int index);
-		void removeVehicle(Section* sec);
+		void move(Section* sec, int index, LightColor color, int yellowTimeLeft, Lane* turn);
+		void turn(Section* sec,int index, Lane* turnLane);
 		void moveForward(Section* sec, int index);
+		void removeVehicle();
 
 	public:
 
@@ -33,17 +33,18 @@ class Lane {
 		Lane();
 		~Lane();
 
-		
 		Section* getStart(); //returns the first inbounds section of the lane
 
 		vector<VehicleBase*> getVehicleVector(); //vector to be passed to the animator
 
-		void advance(LightColor color, int yellowTimeLeft); //control for advancement of the vehicles in the lane
+		void advance(LightColor color, int yellowTimeLeft, Lane* turn); //control for advancement of the vehicles in the lane
 		void resetMoveBool(); //resets the already moved boolean for all vehicles in a lane - to be called after all advancement is done on all lanes
 
 		bool openSpace(); //check if space is open for vehicle generation
 
 		void placeVehicle(VehicleBase* veh);
+
+		int getSize();
 
 		Direction getDir();
 
