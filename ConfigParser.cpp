@@ -24,7 +24,7 @@ ConfigParser::ConfigParser(string filename){
     in.open(filename.c_str());
 
     if(in.bad()){
-        std::cout << "Incorrect Input File" << std::endl;
+        std::cout << "Incorrect Input File:" << std::endl;
     }
     else{
         string line;

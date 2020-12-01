@@ -24,11 +24,11 @@ Simulation::Simulation(ConfigParser config){
     propSuvs = stod(config.get("proportion_of_SUVs"));
     propTrucks = (1-propCars-propSuvs);
     propLeftTurnCar = stod(config.get("proportion_left_turn_cars"));
-    propRightTurnCar = stod(config.get("proportion_right_turn_cars")) + propLeftTurnCar;
+    propRightTurnCar = (stod(config.get("proportion_right_turn_cars")) + propLeftTurnCar);
     propLeftTurnSuv = stod(config.get("proportion_left_turn_SUVs"));
-    propRightTurnSuv = stod(config.get("proportion_right_turn_SUVs")) + propLeftTurnSuv;
+    propRightTurnSuv = (stod(config.get("proportion_right_turn_SUVs")) + propLeftTurnSuv);
     propLeftTurnTruck = stod(config.get("proportion_left_turn_trucks"));
-    propRightTurnTruck = stod(config.get("proportion_right_turn_trucks")) + propLeftTurnTruck;
+    propRightTurnTruck = (stod(config.get("proportion_right_turn_trucks")) + propLeftTurnTruck);
     randomGen rand = randomGen();
     this->rand = rand;
 }
@@ -159,11 +159,11 @@ void Simulation::makeVehicle(Lane* l, double probNewVeh, vector<VehicleBase*>* v
                 l->getStart()->getVehicle()->setTurnChoice(true);
             }
             //set turn choice for suv
-            else if (l->getStart()->getVehicle()->getVehicleType() == VehicleType::suv && turn > propRightTurnCar && turn <= propRightTurnSuv + propRightTurnCar){
+            else if (l->getStart()->getVehicle()->getVehicleType() == VehicleType::suv && turn <= propRightTurnSuv){
                 l->getStart()->getVehicle()->setTurnChoice(true);
             }   
             //set turn choice for truck
-            else if (l->getStart()->getVehicle()->getVehicleType() == VehicleType::truck && turn > propRightTurnCar + propRightTurnSuv){
+            else if (l->getStart()->getVehicle()->getVehicleType() == VehicleType::truck && turn <= propRightTurnTruck){
                 l->getStart()->getVehicle()->setTurnChoice(true);
             }
         }
