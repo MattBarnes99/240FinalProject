@@ -37,7 +37,8 @@ class Lane {
 
 		vector<VehicleBase*> getVehicleVector(); //vector to be passed to the animator
 
-		void advance(LightColor color, int yellowTimeLeft, Lane* turn, Lane* turnFrom); //control for advancement of the vehicles in the lane
+		void advanceOne(LightColor color, int yellowTimeLeft, Lane* turn, Lane* turnFrom); //control for advancement of the vehicles in the lane after intersection
+		void advanceTwo(LightColor color, int yellowTimeLeft, Lane* turn, Lane* turnFrom); //control for advancement of the vehicles in the lane before intersection
 		void resetMoveBool(); //resets the already moved boolean for all vehicles in a lane - to be called after all advancement is done on all lanes
 
 		bool openSpace(); //check if space is open for vehicle generation

@@ -63,8 +63,8 @@ void Simulation::run(int seed){
 
     //Set vehicles on the animator
     anim.setVehiclesNorthbound(northBound.getVehicleVector());
-    anim.setVehiclesSouthbound(southBound.getVehicleVector());
     anim.setVehiclesEastbound(eastBound.getVehicleVector());
+    anim.setVehiclesSouthbound(southBound.getVehicleVector());
     anim.setVehiclesWestbound(westBound.getVehicleVector());
 
     //set seed of randomGen
@@ -99,10 +99,14 @@ void Simulation::run(int seed){
         cin.get(in);
 
         //advance vehicles in all lanes
-        northBound.advance(ns.getColor(), ns.getYellowTimeLeft(), &eastBound, &westBound);
-        southBound.advance(ns.getColor(), ns.getYellowTimeLeft(), &westBound, &eastBound);
-        eastBound.advance(ew.getColor(), ew.getYellowTimeLeft(), &southBound, &northBound);
-        westBound.advance(ew.getColor(), ew.getYellowTimeLeft(), &northBound, &southBound);
+        northBound.advanceOne(ns.getColor(), ns.getYellowTimeLeft(), &eastBound, &westBound);
+        southBound.advanceOne(ns.getColor(), ns.getYellowTimeLeft(), &westBound, &eastBound);
+        eastBound.advanceOne(ew.getColor(), ew.getYellowTimeLeft(), &southBound, &northBound);
+        westBound.advanceOne(ew.getColor(), ew.getYellowTimeLeft(), &northBound, &southBound);
+        northBound.advanceTwo(ns.getColor(), ns.getYellowTimeLeft(), &eastBound, &westBound);
+        southBound.advanceTwo(ns.getColor(), ns.getYellowTimeLeft(), &westBound, &eastBound);
+        eastBound.advanceTwo(ew.getColor(), ew.getYellowTimeLeft(), &southBound, &northBound);
+        westBound.advanceTwo(ew.getColor(), ew.getYellowTimeLeft(), &northBound, &southBound);
 
         //reset alreadyMoved booleans for all vehicles
         northBound.resetMoveBool();

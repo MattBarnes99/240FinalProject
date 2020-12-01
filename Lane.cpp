@@ -123,17 +123,17 @@ void Lane::placeVehicle(VehicleBase* veh){
 }
 
 
-// advance is the intitiating structure to move the vehicles in a given lane
-// creates an iterator starting at the end of the lane and iterates down
-// calling appropriate move methods as needed
+// advanceOne is the intitiating structure to move the vehicles in a given lane
+// after the intersection. It creates an iterator starting at the end of the lane 
+// and iterates down calling appropriate move methods as needed
 //
 // Parameter - LightColor color is the color of the light for this lane at 
 // this moment
 // Parameter - int yellowTimeLeft is how much time is left for the yellow 
 // light for this lane
 //
-void Lane::advance(LightColor color, int yellowTimeLeft, Lane* turn, Lane* turnFrom){
-	for (int i = lane.size()-1; i > -1; i--){
+void Lane::advanceOne(LightColor color, int yellowTimeLeft, Lane* turn, Lane* turnFrom){
+	for (int i = lane.size()-1; i > size/2; i--){
 		//check there is a vehcile in the section
 		if (lane[i]->getOccupied()){
 			//Check the vehicle's AlreadyMoved boolean is false
@@ -147,6 +147,33 @@ void Lane::advance(LightColor color, int yellowTimeLeft, Lane* turn, Lane* turnF
 		removeVehicle();
 	}
 }
+
+
+// advanceTwo is the intitiating structure to move the vehicles in a given lane
+// before the intersection. It creates an iterator starting at the end of the lane 
+// and iterates down calling appropriate move methods as needed
+//
+// Parameter - LightColor color is the color of the light for this lane at 
+// this moment
+// Parameter - int yellowTimeLeft is how much time is left for the yellow 
+// light for this lane
+//
+void Lane::advanceTwo(LightColor color, int yellowTimeLeft, Lane* turn, Lane* turnFrom){
+	for (int i = size/2; i > -1; i--){
+		//check there is a vehcile in the section
+		if (lane[i]->getOccupied()){
+			//Check the vehicle's AlreadyMoved boolean is false
+			if (lane[i]->getVehicle()->getAlreadyMoved() == false){
+				move(lane[i], i, color, yellowTimeLeft, turn, turnFrom);
+			}
+		}else{
+			continue;
+		}
+		//remove offbounds vehicles
+		removeVehicle();
+	}
+}
+
 
 // move contains all of the logic to decide how a vehicle should move 
 // after being called by the advance method
@@ -297,7 +324,6 @@ void Lane::turn(Section* sec, int index, Lane* turnLane, Lane* turnFrom){
 			//update the tail
 			sec->getVehicle()->getTail()->setOccupied(false);
 			sec->getVehicle()->getTail()->setVehicle(nullptr);
-			sec->getVehicle()->setTail(sec->getVehicle()->getTail()->getNext());
 			if (sec->getVehicle()->getVehicleType() == VehicleType::suv){
 				sec->getVehicle()->setTail(lane[index-1]);
 			}else if (sec->getVehicle()->getVehicleType() == VehicleType::truck){
